@@ -9,7 +9,6 @@ export default middleware((req) => {
     const logged = !!req.auth
     const url = req.nextUrl.pathname
     const isPublic = PUBLIC_ROUTES.some(route => {
-        console.log(url)
         return url.startsWith(route) || url == "/"
     })
 

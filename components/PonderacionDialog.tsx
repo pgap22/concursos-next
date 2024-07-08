@@ -14,6 +14,7 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { useEffect } from "react";
 
 interface PonderacionDialogProps {
     open: boolean;
@@ -27,6 +28,14 @@ export default function PonderacionDialog({ open, onClose, onSubmit, defaultValu
         resolver: zodResolver(ponderacionSchema),
         defaultValues
     });
+
+
+    useEffect(() => {
+        reset(defaultValues)
+        return () => {
+            reset();
+        }
+    }, [defaultValues])
 
     const handleFormSubmit = (data: PonderacionSchema) => {
         onSubmit(data);

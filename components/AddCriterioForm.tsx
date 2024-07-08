@@ -8,9 +8,10 @@ import { useForm } from "react-hook-form";
 
 interface AddCriterioFormProps {
     onSubmit: (data: CriteriosSchema) => void;
+    disabled: boolean
 }
 
-export default function AddCriterioForm({ onSubmit }: AddCriterioFormProps) {
+export default function AddCriterioForm({ onSubmit, disabled }: AddCriterioFormProps) {
     const { register, handleSubmit, reset } = useForm<CriteriosSchema>({
         resolver: zodResolver(criteriosSchema)
     });
@@ -24,7 +25,7 @@ export default function AddCriterioForm({ onSubmit }: AddCriterioFormProps) {
         <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-4 max-w-sm">
             <Input {...register("nombre")} placeholder="Nombre del criterio" />
             <Textarea {...register("descripcion")} placeholder="Descripcion del criterio" />
-            <Button>Crear</Button>
+            <Button disabled={disabled}>Crear</Button>
         </form>
     );
 }
