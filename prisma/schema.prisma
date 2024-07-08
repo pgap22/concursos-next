@@ -1,0 +1,111 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum estadoConcurso {
+  inscripcion
+  evaluacion
+  finalizado
+}
+
+enum roles {
+  jurado
+  admin
+}
+
+enum PonderacionTipo {
+  personalizado
+  escalaUnoCinco
+  Si_No
+}
+
+model usuario {
+  id       String @id @default(uuid())
+  nombre   String
+  usuario  String
+  password String
+  rol      roles
+}
+
+model Concurso {
+  id     String         @id @default(uuid())
+  nombre String
+  descripcion String
+  fecha  DateTime
+  estado estadoConcurso
+
+  id_rubrica String?
+
+  rubrica Rubrica? @relation(fields: [id_rubrica], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  participantes ParticipacionConcursante[]
+}
+
+model Rubrica {
+  id     String @id @default(uuid())
+  nombre String
+  descripcion String
+  
+  concursos Concurso[]
+  criterios RubricaCriterios[]
+}
+
+model RubricaCriterios {
+  id          String @id @default(uuid())
+  nombre      String
+  descripcion String
+
+  id_rubrica String
+  rubrica    Rubrica                @relation(fields: [id_rubrica], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  puntajes   CriteriosPonderacion[]
+}
+
+model CriteriosPonderacion {
+  id          String           @id @default(uuid())
+  nombre      String
+  id_criterio String
+  tipo        PonderacionTipo
+  criterio    RubricaCriterios @relation(fields: [id_criterio], references: [id], onDelete: Cascade, onUpdate: Cascade)
+}
+
+model concursante {
+  id              String                     @id @default(uuid())
+  nombre          String
+  institucion     String
+  participaciones ParticipacionConcursante[]
+}
+
+model ParticipacionConcursante {
+  id             String @id @default(uuid())
+  id_concurso    String
+  id_concursante String
+
+  puntajes                PuntajesConcursante[]
+  concursante             concursante               @relation(fields: [id_concursante], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  concurso                Concurso                  @relation(fields: [id_concurso], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  penalizacion PenalizacionConcursante[]
+}
+
+model PuntajesConcursante {
+  id               String                   @id @default(uuid())
+  puntaje          Float
+  id_participacion String
+  participacion    ParticipacionConcursante @relation(fields: [id_participacion], references: [id], onDelete: Cascade, onUpdate: Cascade)
+}
+
+model PenalizacionConcursante {
+  id               String                   @id @default(uuid())
+  razon            String
+  id_participacion String
+  participacion    ParticipacionConcursante @relation(fields: [id_participacion], references: [id], onDelete: Cascade, onUpdate: Cascade)
+}
