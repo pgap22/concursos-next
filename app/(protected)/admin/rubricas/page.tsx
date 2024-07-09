@@ -10,7 +10,7 @@ export default async function JuradosPage() {
         <div className=" bg-white p-8 rounded-lg shadow-lg">
             <h1 className="text-3xl font-bold mb-6">Rubricas</h1>
             <div className="flex justify-between items-center mb-6">
-                <Button className="bg-yellow-500 text-white hover:bg-yellow-600">
+                <Button asChild className="bg-yellow-500 text-white hover:bg-yellow-600">
                     <Link href="/admin/rubricas/crear">Crear Rubricas</Link>
                 </Button>
             </div>

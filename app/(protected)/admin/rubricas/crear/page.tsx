@@ -38,6 +38,7 @@ export default function CrearRubrica() {
         startTransition(async () => {
             try {
                 await createRubrica(data)
+                setCriterios([])
                 router.push("/admin/rubricas")
             } catch (error) {
                 console.log(error)
@@ -54,7 +55,10 @@ export default function CrearRubrica() {
     const editCriterio = (id: string, data: CriteriosSchema) => {
         setCriterios(criterios.map(criterio => {
             if (criterio.id == id) {
-                return data
+                return {
+                    ...criterio,
+                    ...data
+                }
             }
             return criterio
         }))
