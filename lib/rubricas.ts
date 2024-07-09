@@ -1,13 +1,25 @@
-import { Rubrica } from '@prisma/client';
+import { Prisma, Rubrica } from '@prisma/client';
 import prisma from './prisma';
+import { RubricaData } from '@/types/RubricaData';
+import { RubricaFull } from '@/types/RubricaFull';
 // Create a new rubrica
 export async function createRubrica(data: Rubrica): Promise<Rubrica> {
     return prisma.rubrica.create({ data });
 }
 
 // Get a single rubrica by ID
-export async function getRubricaById(id: string): Promise<Rubrica | null> {
-    return prisma.rubrica.findUnique({ where: { id } });
+export async function getRubricaById(id: string): Promise<RubricaFull| null> {
+    return prisma.rubrica.findUnique({
+        where: { id },
+        include: {
+            criterios: {
+                include: {
+                    puntajes: true
+                }
+            }
+        }
+
+    });
 }
 
 // Update an existing rubrica
