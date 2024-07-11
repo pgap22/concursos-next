@@ -25,7 +25,6 @@ export default function InciarSesion() {
             await authLogin(data);
 
            } catch (error:any) {
-               const errorID = +error
                setError("Usuario o contraseña incorrecto")
            }
         })
