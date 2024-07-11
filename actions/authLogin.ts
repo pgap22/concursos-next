@@ -10,7 +10,8 @@ export async function authLogin(data : Login) {
         await signIn("credentials",data);
     } catch (error) {
        if(error instanceof AuthError){
-        throw error.cause?.err
+        throw "Usuario o contraseña incorrecto"
        }
+        throw "Error en el servidor
     }
 }
