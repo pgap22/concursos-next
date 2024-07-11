@@ -11,6 +11,6 @@ export async function authLogin(data : Login) {
        if(error instanceof AuthError){
         return {error: "Usuario o Contraseña Invalidos"}
        }
-        throw 0
+        return {error: "Error en el servidor"}
     }
 }
