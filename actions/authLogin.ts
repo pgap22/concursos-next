@@ -8,6 +8,7 @@ export async function authLogin(data : Login) {
     try {
         await signIn("credentials",data);
     } catch (error) {
+        console.log(error)
        if(error instanceof AuthError){
         return {error: "Usuario o Contraseña Invalidos"}
        }
