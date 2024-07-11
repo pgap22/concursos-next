@@ -22,10 +22,13 @@ export default function InciarSesion() {
         setError("")
         startTransition(async()=>{
            try {
-            await authLogin(data);
-
+            const resultado =  await authLogin(data);
+            if(resultado?.error){
+                setError(resultado.error)
+                return
+            }
            } catch (error:any) {
-               setError("Usuario o contraseña incorrecto")
+               setError("Error en el servidor")
            }
         })
     }
