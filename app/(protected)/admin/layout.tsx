@@ -20,7 +20,9 @@ export default async function AdminLayout({ children }: { children: ReactNode })
                         className="w-full md:w-auto"
                         action={async () => {
                             "use server";
-                            await signOut();
+                            await signOut({
+                                redirectTo: "/"
+                            });
                         }}
                     >
                         <Button className="bg-red-600 w-full text-white hover:bg-red-700 py-2 px-4 rounded-lg">Logout</Button>

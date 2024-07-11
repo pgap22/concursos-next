@@ -27,6 +27,7 @@ export default function InciarSesion() {
                 setError(resultado.error)
                 return
             }
+            router.push("/redirect")
            } catch (error:any) {
                setError("Error en el servidor")
            }
