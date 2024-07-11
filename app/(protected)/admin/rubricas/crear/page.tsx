@@ -111,7 +111,7 @@ export default function CrearRubrica() {
         }));
     };
 
-    const abrirEditarPonderacion = (idPonderacion: string, idCriterio: string) => {
+    const abrirEditarPonderacion = (idCriterio: string, idPonderacion: string) => {
         const ponderacion = criterios.find(criterio => criterio.id == idCriterio)?.puntajes?.find(ponderacion => ponderacion.id == idPonderacion);
         setIdCriterio(idCriterio);
         setIdPonderacion(idPonderacion);

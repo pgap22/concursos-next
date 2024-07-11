@@ -15,7 +15,6 @@ export default async function JuradoLayout({ children }: { children: ReactNode }
                 <form
                     action={async () => {
                         "use server"
-                        console.log("xd")
                         await signOut()
                     }}
                 >
