@@ -23,7 +23,7 @@ export default function InciarSesion() {
         startTransition(async()=>{
            try {
             await authLogin(data);
-            router.push("/redirect")
+
            } catch (error:any) {
                const errorID = +error
                setError("Usuario o contraseña incorrecto")
