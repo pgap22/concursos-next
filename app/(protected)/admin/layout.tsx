@@ -11,7 +11,7 @@ export default async function AdminLayout({ children }: { children: ReactNode })
 
     return (
         <>
-            <div className="min-h-screen bg-gradient-to-r from-gray-50 to-gray-100 p-10">
+            <div className="min-h-screen bg-gradient-to-r from-gray-50 to-gray-100 p-4">
                 <header className="flex flex-col md:flex-row  justify-between md:items-center mb-12 bg-white p-6 shadow-lg rounded-lg">
                     <Link href={"/admin"}>
                         <h1 className="text-4xl font-extrabold text-gray-900">Admin Dashboard</h1>
