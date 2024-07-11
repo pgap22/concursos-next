@@ -4,15 +4,36 @@ import prisma from "@/lib/prisma";
 import { UsuarioUpdate } from "@/schemas/usuario";
 import { revalidatePath } from "next/cache";
 
-export  async function updateJurado(id: string, data: UsuarioUpdate) {
+export async function updateJurado(id: string, data: UsuarioUpdate) {
     try {
         // Realiza la actualización utilizando Prisma
 
-        if(data.password){
-            data.password =  await hashPassword(data.password)
+        const isSameUser = await prisma.usuario.findFirst({
+            where: {
+                AND: [
+                    {
+                        usuario: data.usuario
+                    },
+                    {
+                        id: {
+                            not: id
+                        }
+                    }
+                ]
+            }
+        })
+
+        if (isSameUser) {
+            return {
+                error: "Ese usuario ya esta usado"
+            }
         }
 
-        if(!data.password){
+        if (data.password) {
+            data.password = await hashPassword(data.password)
+        }
+
+        if (!data.password) {
             delete data.password
         }
 

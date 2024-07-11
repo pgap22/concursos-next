@@ -21,6 +21,25 @@ export async function getRubricaById(id: string): Promise<RubricaFull| null> {
 
     });
 }
+export async function getRubricaByConcursoId(id_concurso: string){
+    return prisma.rubrica.findFirst({
+        where: { 
+            concursos: {
+                some: {
+                    id: id_concurso
+                }
+            }
+         },
+        include: {
+            criterios: {
+                include: {
+                    puntajes: true
+                }
+            }
+        }
+
+    });
+}
 
 // Update an existing rubrica
 export async function updateRubrica(id: string, data: Partial<Rubrica>): Promise<Rubrica | null> {

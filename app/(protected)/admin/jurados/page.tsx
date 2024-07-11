@@ -10,7 +10,7 @@ export default async function JuradosPage() {
         <div className=" bg-white p-8 rounded-lg shadow-lg">
             <h1 className="text-3xl font-bold mb-6">Jurados</h1>
             <div className="flex justify-between items-center mb-6">
-                <Button className="bg-blue-500 text-white hover:bg-blue-600">
+                <Button asChild className="bg-blue-500 text-white hover:bg-blue-600">
                     <Link href="/admin/jurados/crear">Crear Jurado</Link>
                 </Button>
             </div>

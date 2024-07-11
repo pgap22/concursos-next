@@ -31,31 +31,33 @@ enum PonderacionTipo {
 }
 
 model usuario {
-  id       String @id @default(uuid())
-  nombre   String
-  usuario  String
-  password String
-  rol      roles
+  id               String             @id @default(uuid())
+  nombre           String
+  usuario          String
+  password         String
+  rol              roles
+  JuradosConcursos JuradosConcursos[]
 }
 
 model Concurso {
-  id     String         @id @default(uuid())
-  nombre String
+  id          String         @id @default(uuid())
+  nombre      String
   descripcion String
-  fecha  DateTime
-  estado estadoConcurso
+  fecha       DateTime
+  estado      estadoConcurso
 
   id_rubrica String?
 
-  rubrica Rubrica? @relation(fields: [id_rubrica], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  participantes ParticipacionConcursante[]
+  rubrica          Rubrica?                   @relation(fields: [id_rubrica], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  participantes    ParticipacionConcursante[]
+  JuradosConcursos JuradosConcursos[]
 }
 
 model Rubrica {
-  id     String @id @default(uuid())
-  nombre String
+  id          String @id @default(uuid())
+  nombre      String
   descripcion String
-  
+
   concursos Concurso[]
   criterios RubricaCriterios[]
 }
@@ -71,11 +73,12 @@ model RubricaCriterios {
 }
 
 model CriteriosPonderacion {
-  id          String           @id @default(uuid())
-  nombre      String
-  id_criterio String
-  tipo        PonderacionTipo
-  criterio    RubricaCriterios @relation(fields: [id_criterio], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  id                  String                @id @default(uuid())
+  nombre              String
+  id_criterio         String
+  tipo                PonderacionTipo
+  criterio            RubricaCriterios      @relation(fields: [id_criterio], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  PuntajesConcursante PuntajesConcursante[]
 }
 
 model concursante {
@@ -85,22 +88,34 @@ model concursante {
   participaciones ParticipacionConcursante[]
 }
 
+model JuradosConcursos {
+  id          String @id @default(uuid())
+  id_concurso String
+  id_jurado   String
+
+  jurado   usuario  @relation(fields: [id_jurado], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  concurso Concurso @relation(fields: [id_concurso], references: [id], onDelete: Cascade, onUpdate: Cascade)
+}
+
 model ParticipacionConcursante {
   id             String @id @default(uuid())
   id_concurso    String
   id_concursante String
 
-  puntajes                PuntajesConcursante[]
-  concursante             concursante               @relation(fields: [id_concursante], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  concurso                Concurso                  @relation(fields: [id_concurso], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  puntajes     PuntajesConcursante[]
+  concursante  concursante               @relation(fields: [id_concursante], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  concurso     Concurso                  @relation(fields: [id_concurso], references: [id], onDelete: Cascade, onUpdate: Cascade)
   penalizacion PenalizacionConcursante[]
 }
 
 model PuntajesConcursante {
-  id               String                   @id @default(uuid())
-  puntaje          Float
-  id_participacion String
-  participacion    ParticipacionConcursante @relation(fields: [id_participacion], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  id                      String @id @default(uuid())
+  puntaje                 Float
+  id_participacion        String
+  id_criterio_ponderacion String
+
+  criterioPonderacion CriteriosPonderacion     @relation(fields: [id_criterio_ponderacion], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  participacion       ParticipacionConcursante @relation(fields: [id_participacion], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model PenalizacionConcursante {

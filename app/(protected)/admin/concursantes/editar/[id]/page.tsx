@@ -1,11 +1,9 @@
 import ConcursanteForm from "@/components/forms/concursante";
-import JuradoForm from "@/components/forms/jurado";
-import { getconcursanteById } from "@/lib/concursantes";
-import { getUsuarioById } from "@/lib/usuario";
+import { getconcursanteById, getConcursanteByIdWithConcursos } from "@/lib/concursantes";
 import { redirect } from "next/navigation";
 
 export default async function EditarConcursante({ params }: { params: { id: string } }) {
-    const concursante = await getconcursanteById(params.id)
+    const concursante = await getConcursanteByIdWithConcursos(params.id)
 
     if(!concursante) return redirect("/concursantes")
 

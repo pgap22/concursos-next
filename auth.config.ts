@@ -4,6 +4,7 @@ import { getUsuarioByUsuario } from "./lib/usuario"
 import { verifyPassword } from "./lib/password"
 
 export default {
+    trustHost: true,
     providers: [
         Credentials({
             credentials: {

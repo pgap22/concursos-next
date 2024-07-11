@@ -10,7 +10,7 @@ export default async function Concursantes() {
         <div className=" bg-white p-8 rounded-lg shadow-lg">
             <h1 className="text-3xl font-bold mb-6">Concursantes</h1>
             <div className="flex justify-between items-center mb-6">
-                <Button className="bg-purple-500 text-white hover:bg-purple-600">
+                <Button asChild className="bg-purple-500 text-white hover:bg-purple-600">
                     <Link href="/admin/concursantes/crear">Crear Concursnate</Link>
                 </Button>
             </div>

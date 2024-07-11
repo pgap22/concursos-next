@@ -13,12 +13,12 @@ export async function createRubrica(data:RubricaData) {
             descripcion: data.descripcion,
             criterios: {
                 create: criterios.map(criterio => {
-                    const {ponderaciones} = criterio
+                    const {puntajes} = criterio
                     return {
                         nombre: criterio.nombre,
                         descripcion: criterio.descripcion,
                         puntajes: {
-                            create: ponderaciones.map(ponderacion => {
+                            create: puntajes.map(ponderacion => {
                                 return(
                                     {
                                         nombre: ponderacion.nombre,
@@ -39,6 +39,6 @@ export async function createRubrica(data:RubricaData) {
         revalidatePath("/admin/rubricas")
         return rubrica
     } catch (error) {
-        console.log(error)
+        throw error
     }
 }

@@ -38,3 +38,17 @@ export async function getUsuariosByRol(rol: roles | undefined): Promise<usuario[
         }
     });
 }
+export async function getJurados(): Promise<Prisma.usuarioGetPayload<{
+    include: {
+        JuradosConcursos: true
+    }
+}>[]> {
+    return prisma.usuario.findMany({
+        where: {
+            rol: 'jurado'
+        },
+        include: {
+            JuradosConcursos: true
+        }
+    });
+}
