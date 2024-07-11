@@ -10,8 +10,8 @@ export async function authLogin(data : Login) {
         await signIn("credentials",data);
     } catch (error) {
        if(error instanceof AuthError){
-        throw "1"
+        throw 1
        }
-        throw "0"
+        throw 0
     }
 }
