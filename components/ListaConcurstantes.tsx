@@ -19,6 +19,7 @@ export const ListaConcursante = ({ concursantes, concurso_id }: {
         <div className="mb-4">
             <div className="my-2">
                 <p className="font-bold">Buscar Concursante</p>
+                <p className="text-yellow-600 text-sm my-2">Escribiendo <span className="font-bold">*</span> mostrara todos los concursantes</p>
                 <Input onChange={e=> setQuery(e.target.value)} placeholder="Buscar" />
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
