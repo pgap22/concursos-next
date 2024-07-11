@@ -6,11 +6,10 @@ import { AuthError } from "next-auth";
 
 export async function authLogin(data : Login) {
     try {
-        console.log(data)
         await signIn("credentials",data);
     } catch (error) {
        if(error instanceof AuthError){
-        throw 1
+        return {error: "Usuario o Contraseña Invalidos"}
        }
         throw 0
     }
