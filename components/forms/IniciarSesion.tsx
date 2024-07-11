@@ -26,7 +26,7 @@ export default function InciarSesion() {
             router.push("/redirect")
            } catch (error:any) {
                const errorID = +error
-               setError(errorID == 1 ? "Usuario o contraseña incorrecto" : "Error en el servidor")
+               setError("Usuario o contraseña incorrecto")
            }
         })
     }
