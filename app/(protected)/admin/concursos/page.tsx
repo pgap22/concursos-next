@@ -7,7 +7,8 @@ export default async function ConcursosPage() {
     const concursos = await getAllconcursos()
 
     return (
-        <div className=" bg-white p-8 rounded-lg shadow-lg">
+        <div className=" bg-white p-4 rounded-lg shadow-lg">
+            <Link href={"/admin"}>Volver</Link>
             <h1 className="text-3xl font-bold mb-6">Concursos</h1>
             <div className="flex justify-between items-center mb-6">
                 <Button asChild className="bg-green-500 text-white hover:bg-green-600">

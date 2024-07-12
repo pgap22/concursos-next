@@ -160,7 +160,7 @@ export default function EditarRubricaForm({ rubrica }: { rubrica: RubricaFull })
     }
 
     return (
-        <div className="p-6 bg-white border rounded-md">
+        <div className="p-4 bg-white border rounded-md">
             <h2 className="mb-6 text-3xl font-bold">Edición de Rúbrica</h2>
             <form onSubmit={handleSubmit(enviarDatos)} className="space-y-4 mb-8">
                 <h3 className="text-xl font-semibold">Información General</h3>

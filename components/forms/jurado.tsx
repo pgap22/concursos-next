@@ -42,7 +42,7 @@ export default function JuradoForm({ type, jurado }: { type: 'create' | 'edit', 
     };
 
     return (
-        <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-md mx-auto">
+        <div className="bg-white rounded-lg shadow-lg p-4 w-full max-w-md mx-auto">
             <h1 className="text-3xl my-2 font-bold text-gray-900">{type == "create" ? "Crear" : "Editar"} Jurado</h1>
 
             {/* Botón de importar Excel (simulado) */}

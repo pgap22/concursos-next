@@ -3,6 +3,7 @@ import { concursante, Prisma } from "@prisma/client";
 import { Button } from "./ui/button";
 import { useTransition } from "react";
 import { toggleInscripcionConcursante } from "@/actions/toggleInscripcionConcursante";
+import { MdOutlineChevronLeft } from "react-icons/md";
 
 export default function ParticiapanteItemList({ participante }: {
     participante: Prisma.ParticipacionConcursanteGetPayload<{
@@ -25,8 +26,13 @@ export default function ParticiapanteItemList({ participante }: {
 
     return (
         <li key={participante.id} className="py-2 gap-2 flex justify-between items-center">
-            <p className="text-base font-semibold text-gray-800">Participante: {participante.concursante.nombre}</p>
-            <Button disabled={cargando} onClick={eliminar} variant={"destructive"}>Eliminar</Button>
+            <div>
+                {/* <div>
+                    <MdOutlineChevronLeft />
+                </div> */}
+                <p className="text-base font-semibold text-gray-800">Participante: {participante.concursante.nombre}</p>
+                <Button disabled={cargando} onClick={eliminar} variant={"destructive"}>Eliminar</Button>
+            </div>
         </li>
     )
 }

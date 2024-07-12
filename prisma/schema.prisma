@@ -82,10 +82,21 @@ model CriteriosPonderacion {
 }
 
 model concursante {
-  id              String                     @id @default(uuid())
-  nombre          String
-  institucion     String
-  participaciones ParticipacionConcursante[]
+  id                        String                      @id @default(uuid())
+  nombre                    String
+  institucion               String
+  orden Int?
+  participaciones           ParticipacionConcursante[]
+  DatosGeneralesConcursante DatosGeneralesConcursante[]
+}
+
+model DatosGeneralesConcursante {
+  id    String @id @default(uuid())
+  campo String
+  valor String
+
+  id_concursante String
+  concursante    concursante @relation(fields: [id_concursante], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model JuradosConcursos {

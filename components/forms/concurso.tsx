@@ -48,7 +48,7 @@ export default function ConcursoForm({ type, concurso, rubricas }: { type: 'crea
 
 
     return (
-        <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-md mx-auto">
+        <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md mx-auto">
             <Link href={"/admin/concursos/"}>Volver</Link>
 
             <h1 className="text-3xl mb-2 font-bold text-gray-900">{type === "create" ? "Crear" : "Editar"} Concurso</h1>

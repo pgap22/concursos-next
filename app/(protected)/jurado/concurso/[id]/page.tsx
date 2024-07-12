@@ -15,17 +15,19 @@ export default async function ConcursPageJurado({ params }: { params: { id: stri
             <Link href={"/jurado"}>Volver</Link>
             <h1 className="text-2xl font-bold mb-4">{concurso.nombre}</h1>
 
-            <div className="mb-4">
-                <Link href={"/jurado/concurso/" + concurso.id + "/concursantes"}>
-                    <div className="border p-4 rounded-md grid grid-cols-[max-content_1fr] gap-2 bg-yellow-50 text-yellow-800">
-                        <LucideClipboardEdit size={32} />
-                        <div>
-                            <p className="font-bold text-xl">Evaluar concursantes</p>
-                            <p>Evalua a los concursantes con su respectiva rubrica</p>
+            {concurso.estado === "evaluacion" && (
+                <div className="mb-4">
+                    <Link href={"/jurado/concurso/" + concurso.id + "/concursantes"}>
+                        <div className="border p-4 rounded-md grid grid-cols-[max-content_1fr] gap-2 bg-yellow-50 text-yellow-800">
+                            <LucideClipboardEdit size={32} />
+                            <div>
+                                <p className="font-bold text-xl">Evaluar concursantes</p>
+                                <p>Evalua a los concursantes con su respectiva rubrica</p>
+                            </div>
                         </div>
-                    </div>
-                </Link>
-            </div>
+                    </Link>
+                </div>
+            )}
             {concurso.estado === "finalizado" && (
                 <div>
                     <Link href={"/jurado/concurso/" + concurso.id + "/ranking"}>

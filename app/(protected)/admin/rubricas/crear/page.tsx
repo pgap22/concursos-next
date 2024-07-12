@@ -144,7 +144,7 @@ export default function CrearRubrica() {
     }, [criterios]);
 
     return (
-        <div className="p-6 bg-white border rounded-md">
+        <div className="p-4 bg-white border rounded-md">
             <h2 className="mb-6 text-3xl font-bold">Creación de Rúbrica</h2>
             <div className="space-y-4 mb-4">
                 <h3 className="text-xl font-semibold">Información de la rúbrica</h3>

@@ -27,7 +27,7 @@ export default async function JuradoLayout({ children }: { children: ReactNode }
                 </form>
             </header>
 
-            <div className="p-6">
+            <div className="p-4">
                 {children}
             </div>
         </>

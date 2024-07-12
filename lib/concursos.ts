@@ -194,6 +194,7 @@ export async function getRankingConcurso(id_concurso:string){
             include: {
                 concursante: {
                     include: {
+                        DatosGeneralesConcursante:true,
                         participaciones: {
                             where: {
                                 id_concurso
@@ -214,6 +215,7 @@ export async function getRankingConcurso(id_concurso:string){
             })
             return {
                 nombre: concursante.concursante.nombre,
+                datosGenerales: concursante.concursante.DatosGeneralesConcursante,
                 puntajeAcumulado: puntajeAcumulado[0]
             }
         }).sort((a,b)=> {

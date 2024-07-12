@@ -13,18 +13,21 @@ export async function getconcursanteById(id: string): Promise<concursante | null
 // Get a single concursante by ID
 export async function getConcursanteByIdWithConcursos(id: string): Promise<Prisma.concursanteGetPayload<{
     include: {
+        DatosGeneralesConcursante: true
         participaciones: {
             include: {
-                concurso: true
+                concurso: true,
             }
         }
     }
 }> | null> {
     return prisma.concursante.findUnique({
         where: { id }, include: {
+            DatosGeneralesConcursante: true,
             participaciones: {
                 include: {
-                    concurso: true
+                    concurso: true,
+                    
                 }
             }
         }

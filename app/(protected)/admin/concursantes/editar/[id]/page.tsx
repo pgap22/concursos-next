@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 
 export default async function EditarConcursante({ params }: { params: { id: string } }) {
     const concursante = await getConcursanteByIdWithConcursos(params.id)
-
+    
     if(!concursante) return redirect("/concursantes")
 
     return (

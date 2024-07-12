@@ -11,18 +11,12 @@ import { Alert } from "../ui/alert";
 import { Concursante, concursanteSchema } from "@/schemas/concursante";
 import { createConcursante } from "@/actions/createConcursante";
 import { updateConcursante } from "@/actions/updateConcursante";
+import { ConcursanteFull } from "@/types/ConcursanteFull";
+import ConcursanteDatos from "./concursanteDatos";
 
 
 export default function ConcursanteForm({ type, concursante }: {
-    type: 'create' | 'edit', concursante?: Prisma.concursanteGetPayload<{
-        include: {
-            participaciones: {
-                include: {
-                    concurso: true
-                }
-            }
-        }
-    }>
+    type: 'create' | 'edit', concursante?: ConcursanteFull
 }) {
     const [isPending, startTransition] = useTransition();
 
@@ -54,12 +48,11 @@ export default function ConcursanteForm({ type, concursante }: {
         });
     };
 
-
     return (
-        <>
+        <div className="flex flex-col gap-4">
 
-            <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-md mx-auto">
-                <h1 className="text-3xl font-bold text-gray-900">{type === "create" ? "Crear" : "Editar"} Concursante</h1>
+            <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md mx-auto">
+                <h1 className="text-xl font-bold text-gray-900">{type === "create" ? "Crear" : "Editar"} Concursante</h1>
 
                 {/* Botón de importar Excel (simulado) */}
                 {/* <div className="my-2 mb-6">
@@ -124,7 +117,12 @@ export default function ConcursanteForm({ type, concursante }: {
                 </form>
             </div>
             {
-                type == "edit" && <div className="bg-white rounded-lg my-8 shadow-lg p-8 w-full max-w-md mx-auto">
+                type == "edit" && (
+                   <ConcursanteDatos concursante={concursante as ConcursanteFull} />
+                )
+            }
+            {
+                type == "edit" && <div className="bg-white rounded-lg shadow-lg p-4 w-full max-w-md mx-auto">
                     <h2 className="font-bold">Lista de concursos inscritos</h2>
                     {
                         concursante?.participaciones.map(participacion => {
@@ -137,6 +135,6 @@ export default function ConcursanteForm({ type, concursante }: {
                     }
                 </div>
             }
-        </>
+        </div>
     );
 }

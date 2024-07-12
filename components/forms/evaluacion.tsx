@@ -50,7 +50,7 @@ const CriterioItem = ({ criterio, control, id_participacion }: { criterio: Crite
                         return (
                             <div key={puntaje.id} className="mb-4">
                                 <h2 className="font-bold text-lg">{puntaje.nombre}</h2>
-                                <div className="grid grid-cols-2 gap-4 mt-2">
+                                <div className="flex flex-col gap-4 mt-2">
                                     <CheckboxOption id_participacion={id_participacion} control={control} name={puntaje.id} label="Si" value="1" description="Este criterio se cumple" />
                                     <CheckboxOption id_participacion={id_participacion} control={control} name={puntaje.id} label="No" value="0" description="Este criterio no se cumple" />
                                 </div>
@@ -61,7 +61,7 @@ const CriterioItem = ({ criterio, control, id_participacion }: { criterio: Crite
                         return (
                             <div key={puntaje.id} className="mb-4">
                                 <h2 className="font-bold text-lg">{puntaje.nombre}</h2>
-                                <div className="grid grid-cols-5 gap-4 mt-2">
+                                <div className="flex overflow-auto gap-4 mt-2">
                                     <CheckboxOption id_participacion={id_participacion} control={control} name={puntaje.id} label="Deficiente" value="1" />
                                     <CheckboxOption id_participacion={id_participacion} control={control} name={puntaje.id} label="Regular" value="2" />
                                     <CheckboxOption id_participacion={id_participacion} control={control} name={puntaje.id} label="Bueno" value="3" />
@@ -81,7 +81,7 @@ const CriterioItem = ({ criterio, control, id_participacion }: { criterio: Crite
 const CheckboxOption = ({ label, description, value, name, control, id_participacion}: { label: string, description?: string, value?: string, name: string, control: any, id_participacion: string }) => {
     const [evaluacion, setEvaluacion] = useLocalStorage("evaluacion-"+id_participacion, {})
     return (
-        <label htmlFor={label + "-" + name} className="border puntaje rounded cursor-pointer select-none p-4 flex items-center flex-col">
+        <label htmlFor={label + "-" + name} className="border puntaje min-w-36 rounded cursor-pointer select-none p-4 flex items-center flex-col">
             <h2>{label}</h2>
             {description && <p className="text-sm text-gray-500">{description}</p>}
             {value &&
