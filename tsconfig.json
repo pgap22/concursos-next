@@ -24,6 +24,6 @@
     // Tell ts-node CLI to install the --loader automatically
     "esm": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "createAdmin.ts", "add_participantes.mjs"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "createAdmin.js", "add_participantes.mjs"],
   "exclude": ["node_modules"]
 }
