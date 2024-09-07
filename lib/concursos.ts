@@ -1,11 +1,10 @@
-import { Concurso, Prisma, PuntajesConcursante } from '@prisma/client';
+import { Concurso, Prisma } from '@prisma/client';
 import prisma from './prisma';
 import { auth } from '@/auth';
 // Create a new concurso
 export async function createconcurso(data: Concurso): Promise<Concurso> {
     return prisma.concurso.create({ data });
 }
-
 // Get a single concurso by ID
 export async function getconcursoById(id: string): Promise<Concurso | null> {
     return prisma.concurso.findUnique({ where: { id } });
@@ -113,11 +112,18 @@ export async function getParticipantesConcursoById(id: string) {
     return participantes;
 }
 
-export async function alreadyEvaluted(id_participacion: string) {
+export async function alreadyEvaluted(id_participacion: string, id_jurado: string) {
     try {
         const pariticipacion = await prisma.puntajesConcursante.findFirst({
             where: {
-                id_participacion
+                AND: [
+                    {
+                        id_participacion
+                    },
+                    {
+                        id_jurado
+                    }
+                ]
             }
         })
         return pariticipacion;
@@ -126,7 +132,7 @@ export async function alreadyEvaluted(id_participacion: string) {
     }
 }
 
-export async function getResultadoByParticipacion(id_participacion: string) {
+export async function getResultadoByParticipacion(id_participacion: string, id_jurado: string) {
     try {
         const participacion = await prisma.participacionConcursante.findFirst({
             where: {
@@ -135,6 +141,9 @@ export async function getResultadoByParticipacion(id_participacion: string) {
             include: {
                 concursante: true,
                 puntajes: {
+                    where: {
+                        id_jurado
+                    },
                     include: {
                         criterioPonderacion: {
                             include: {
@@ -185,7 +194,7 @@ export async function getResultadoByParticipacion(id_participacion: string) {
     }
 }
 
-export async function getRankingConcurso(id_concurso:string){
+export async function getRankingConcurso(id_concurso: string) {
     try {
         const ranking = await prisma.participacionConcursante.findMany({
             where: {
@@ -194,7 +203,7 @@ export async function getRankingConcurso(id_concurso:string){
             include: {
                 concursante: {
                     include: {
-                        DatosGeneralesConcursante:true,
+                        DatosGeneralesConcursante: true,
                         participaciones: {
                             where: {
                                 id_concurso
@@ -207,21 +216,21 @@ export async function getRankingConcurso(id_concurso:string){
                 }
             }
         })
-      
+
         return ranking.map(concursante => {
-            const puntajeAcumulado = concursante.concursante.participaciones.map(participacion =>{
-               const puntajeTotal = participacion.puntajes.reduce((acc, puntaje) => {return acc+(+puntaje.puntaje)},0)
-               return puntajeTotal
+            const puntajeAcumulado = concursante.concursante.participaciones.map(participacion => {
+                const puntajeTotal = participacion.puntajes.reduce((acc, puntaje) => { return acc + (+puntaje.puntaje) }, 0)
+                return puntajeTotal
             })
             return {
                 nombre: concursante.concursante.nombre,
                 datosGenerales: concursante.concursante.DatosGeneralesConcursante,
                 puntajeAcumulado: puntajeAcumulado[0]
             }
-        }).sort((a,b)=> {
-            return b.puntajeAcumulado-a.puntajeAcumulado
+        }).sort((a, b) => {
+            return b.puntajeAcumulado - a.puntajeAcumulado
         })
-        
+
     } catch (error) {
         console.log(error)
     }

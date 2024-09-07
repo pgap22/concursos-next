@@ -50,7 +50,7 @@ const CriterioItem = ({ criterio, control, id_participacion }: { criterio: Crite
                         return (
                             <div key={puntaje.id} className="mb-4">
                                 <h2 className="font-bold text-lg">{puntaje.nombre}</h2>
-                                <div className="flex flex-col gap-4 mt-2">
+                                <div className="grid grid-cols-2 text-center gap-4 mt-2">
                                     <CheckboxOption id_participacion={id_participacion} control={control} name={puntaje.id} label="Si" value="1" description="Este criterio se cumple" />
                                     <CheckboxOption id_participacion={id_participacion} control={control} name={puntaje.id} label="No" value="0" description="Este criterio no se cumple" />
                                 </div>
@@ -62,11 +62,11 @@ const CriterioItem = ({ criterio, control, id_participacion }: { criterio: Crite
                             <div key={puntaje.id} className="mb-4">
                                 <h2 className="font-bold text-lg">{puntaje.nombre}</h2>
                                 <div className="flex overflow-auto gap-4 mt-2">
-                                    <CheckboxOption id_participacion={id_participacion} control={control} name={puntaje.id} label="Deficiente" value="1" />
-                                    <CheckboxOption id_participacion={id_participacion} control={control} name={puntaje.id} label="Regular" value="2" />
-                                    <CheckboxOption id_participacion={id_participacion} control={control} name={puntaje.id} label="Bueno" value="3" />
-                                    <CheckboxOption id_participacion={id_participacion} control={control} name={puntaje.id} label="Muy Bueno" value="4" />
-                                    <CheckboxOption id_participacion={id_participacion} control={control} name={puntaje.id} label="Excelente" value="5" />
+                                    <CheckboxOption id_participacion={id_participacion} control={control} name={puntaje.id} label="Excelente"  value="5" description="5" />
+                                    <CheckboxOption id_participacion={id_participacion} control={control} name={puntaje.id} label="Muy Bueno"  value="4" description="4" />
+                                    <CheckboxOption id_participacion={id_participacion} control={control} name={puntaje.id} label="Bueno"  value="3" description="3" />
+                                    <CheckboxOption id_participacion={id_participacion} control={control} name={puntaje.id} label="Regular"  value="2" description="2" />
+                                    <CheckboxOption id_participacion={id_participacion} control={control} name={puntaje.id} label="Deficiente"  value="1" description="1" />
                                 </div>
                             </div>
                         );

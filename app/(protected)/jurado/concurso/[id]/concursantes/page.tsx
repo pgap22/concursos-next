@@ -1,18 +1,19 @@
+import { auth } from "@/auth";
 import { Button } from "@/components/ui/button";
 import { getParticipantesConcursoById } from "@/lib/concursos";
 import { concursante, Prisma } from "@prisma/client";
 import Link from "next/link";
 
 export default async function ConcursantesEvaluacion({ params }: { params: { id: string } }) {
+    const session = await auth();
     const participantes = await getParticipantesConcursoById(params.id);
-
     return (
         <div className="p-4">
             <Link href={"/jurado/concurso/"+params.id}>Volver</Link>
             <div className="mb-6">
                 <h1 className="text-xl font-bold mb-2">Lista de concursantes a evaluar:</h1>
                 <div className="flex flex-col gap-3">
-                    {participantes.filter(p => !p.participaciones[0].puntajes.length).map(p => (
+                    {participantes.filter(p => !p.participaciones[0].puntajes.some(puntaje => puntaje.id_jurado==session?.user.id)).map(p => (
                         <ParticipanteItem key={p.id} participante={p} id_concurso={params.id} />
                     ))}
                 </div>
@@ -20,7 +21,7 @@ export default async function ConcursantesEvaluacion({ params }: { params: { id:
             <div>
                 <h1 className="text-xl font-bold mb-2">Concursantes Evaluados:</h1>
                 <div className="flex flex-col gap-3">
-                    {participantes.filter(p => p.participaciones[0].puntajes.length).map(p => (
+                    {participantes.filter(p => p.participaciones[0].puntajes.some(puntaje => puntaje.id_jurado==session?.user.id)).map(p => (
                         <ParticipanteItem key={p.id} participante={p} id_concurso={params.id} evaluado />
                     ))}
                 </div>

@@ -31,12 +31,13 @@ enum PonderacionTipo {
 }
 
 model usuario {
-  id               String             @id @default(uuid())
+  id               String                @id @default(uuid())
   nombre           String
   usuario          String
   password         String
   rol              roles
   JuradosConcursos JuradosConcursos[]
+  puntajes         PuntajesConcursante[]
 }
 
 model Concurso {
@@ -85,7 +86,7 @@ model concursante {
   id                        String                      @id @default(uuid())
   nombre                    String
   institucion               String
-  orden Int?
+  orden                     Int?
   participaciones           ParticipacionConcursante[]
   DatosGeneralesConcursante DatosGeneralesConcursante[]
 }
@@ -124,7 +125,9 @@ model PuntajesConcursante {
   puntaje                 Float
   id_participacion        String
   id_criterio_ponderacion String
+  id_jurado               String
 
+  jurado              usuario                  @relation(fields: [id_jurado], references: [id], onDelete: Cascade, onUpdate: Cascade)
   criterioPonderacion CriteriosPonderacion     @relation(fields: [id_criterio_ponderacion], references: [id], onDelete: Cascade, onUpdate: Cascade)
   participacion       ParticipacionConcursante @relation(fields: [id_participacion], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }

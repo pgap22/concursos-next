@@ -8,6 +8,7 @@ import { Textarea } from "../ui/textarea"
 import { Button } from "../ui/button"
 import { MdOutlineChevronRight, MdOutlineCopyAll, MdOutlineDelete, MdOutlineEdit } from "react-icons/md"
 import { cn } from "@/lib/utils"
+import { $Enums } from "@prisma/client"
 interface CriterioItemProps {
     criterio: CriterioFull | CriteriosSchema
     disabled: boolean
@@ -75,7 +76,7 @@ export default function CriterioItem({
                         {open && criterio.puntajes.map(ponderacion => (
                             <div key={ponderacion.id} className="bg-gray-50 p-4 border rounded mt-2">
                                 <p>{ponderacion.nombre}</p>
-                                <p>{ponderacion.tipo}</p>
+                                <PonderacionType type={ponderacion.tipo} />
                                 <div className="flex md:flex-row flex-col gap-2">
                                     <Button disabled={disabled} className="aspect-square p-2" onClick={() => onEditPonderacion(ponderacion.id, criterio.id)}>
                                         <MdOutlineEdit size={28} />
@@ -91,4 +92,14 @@ export default function CriterioItem({
             )}
         </div>
     )
+}
+
+const PonderacionType = ({ type }: { type: $Enums.PonderacionTipo }) => {
+    const css = " text-gray-500";
+    if (type == "Si_No") {
+        return <p className={css}>Si o No</p>
+    }
+    if (type == "escalaUnoCinco") {
+        return <p className={css}>Escala del Uno al Cinco</p>
+    }
 }
