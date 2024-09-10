@@ -16,6 +16,8 @@ import dayjs from "dayjs"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { getStatusProperties } from "@/lib/estadoConcurso";
 import { cambiarEstadoConcurso } from "@/actions/cambiarEstadoConcurso";
+import { MdOutlineDelete } from "react-icons/md";
+import { deleteConcurso } from "@/actions/deleteConcurso";
 export default function ConcursoForm({ type, concurso, rubricas }: { type: 'create' | 'edit', concurso?: Concurso, rubricas?: Rubrica[] }) {
     const [isPending, startTransition] = useTransition();
 
@@ -28,7 +30,12 @@ export default function ConcursoForm({ type, concurso, rubricas }: { type: 'crea
     });
     const router = useRouter();
     const { errors } = formState;
-
+    const onDelete = ()=>{
+        startTransition(async()=>{
+            await deleteConcurso(concurso?.id as string)
+            router.push("/admin/concursos")
+        })
+    }
     const onSubmit = async (data: ConcursoRegister) => {
         startTransition(async () => {
             try {
@@ -164,7 +171,7 @@ export default function ConcursoForm({ type, concurso, rubricas }: { type: 'crea
                 </div>
 
                 {/* Botones de acción */}
-                <div className="flex justify-end">
+                <div className="flex justify-end gap-2">
                     <Button
                         type="submit"
                         className={`bg-blue-500 hover:bg-blue-600 text-white ${isPending ? "opacity-75 cursor-not-allowed" : ""
@@ -173,15 +180,13 @@ export default function ConcursoForm({ type, concurso, rubricas }: { type: 'crea
                     >
                         {isPending ? "Guardando..." : "Guardar"}
                     </Button>
-                    <Button
-                        asChild
-                        type="button"
-                        className="ml-4 inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg bg-white text-gray-700 hover:bg-gray-100 focus:outline-none focus:border-blue-500"
-                    >
-                        <Link href={"/admin/concursos"}>
-                            Cancelar
-                        </Link>
-                    </Button>
+                    {
+                        type == "edit" && (
+                            <Button onClick={onDelete} disabled={isPending} variant={"destructive"}>
+                                <MdOutlineDelete size={24} />
+                            </Button>
+                        )
+                    }
                 </div>
             </form>
         </div>

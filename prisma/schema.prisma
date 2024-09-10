@@ -47,6 +47,7 @@ model Concurso {
   fecha       DateTime
   estado      estadoConcurso
 
+  createdAt  DateTime @default(now())
   id_rubrica String?
 
   rubrica          Rubrica?                   @relation(fields: [id_rubrica], references: [id], onDelete: Cascade, onUpdate: Cascade)
@@ -55,18 +56,20 @@ model Concurso {
 }
 
 model Rubrica {
-  id          String @id @default(uuid())
+  id          String   @id @default(uuid())
   nombre      String
   descripcion String
+  createdAt   DateTime @default(now())
 
   concursos Concurso[]
   criterios RubricaCriterios[]
 }
 
 model RubricaCriterios {
-  id          String @id @default(uuid())
+  id          String   @id @default(uuid())
   nombre      String
   descripcion String
+  createdAt   DateTime @default(now())
 
   id_rubrica String
   rubrica    Rubrica                @relation(fields: [id_rubrica], references: [id], onDelete: Cascade, onUpdate: Cascade)
@@ -74,19 +77,23 @@ model RubricaCriterios {
 }
 
 model CriteriosPonderacion {
-  id                  String                @id @default(uuid())
-  nombre              String
-  id_criterio         String
+  id          String   @id @default(uuid())
+  nombre      String
+  id_criterio String
+  createdAt   DateTime @default(now())
+
   tipo                PonderacionTipo
   criterio            RubricaCriterios      @relation(fields: [id_criterio], references: [id], onDelete: Cascade, onUpdate: Cascade)
   PuntajesConcursante PuntajesConcursante[]
 }
 
 model concursante {
-  id                        String                      @id @default(uuid())
-  nombre                    String
-  institucion               String
-  orden                     Int?
+  id          String   @id @default(uuid())
+  nombre      String
+  institucion String
+  orden       Int?
+  createdAt   DateTime @default(now())
+
   participaciones           ParticipacionConcursante[]
   DatosGeneralesConcursante DatosGeneralesConcursante[]
 }

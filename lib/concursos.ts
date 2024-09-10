@@ -81,6 +81,18 @@ export async function getConcursosByAuth() {
     })
     return concursos
 }
+export async function getConcursosEnableToParticipate(id_concursante: string) {
+    const concursos = await prisma.concurso.findMany({
+        where: {
+            participantes: {
+                none: {
+                    id_concursante
+                }
+            }
+        }
+    })
+    return concursos
+}
 
 export async function getParticipantesConcursoById(id: string) {
     const participantes = await prisma.concursante.findMany({

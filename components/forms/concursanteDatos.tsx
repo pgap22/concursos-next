@@ -31,7 +31,7 @@ export default function ConcursanteDatos({ concursante }: { concursante: Concurs
     }
 
     return (
-        <div className="bg-white rounded-lg shadow-lg p-4 w-full max-w-md mx-auto">
+        <div className="bg-white rounded-lg shadow-lg p-4 w-full">
             <h2 className="font-bold">Datos Generales Adicionales</h2>
             <form onSubmit={handleSubmit(crearDatosGeneraleas)}>
                 <div className="flex flex-col gap-2">

@@ -5,18 +5,19 @@ import { useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation"; // Importamos useRouter desde next/navigation
-import { concursante, Prisma } from "@prisma/client";
-import Link from "next/link";
+import { Concurso } from "@prisma/client";
 import { Alert } from "../ui/alert";
 import { Concursante, concursanteSchema } from "@/schemas/concursante";
 import { createConcursante } from "@/actions/createConcursante";
 import { updateConcursante } from "@/actions/updateConcursante";
 import { ConcursanteFull } from "@/types/ConcursanteFull";
 import ConcursanteDatos from "./concursanteDatos";
+import { MdOutlineDelete } from "react-icons/md";
+import { deleteConcursante } from "@/actions/deleteConcursante";
 
 
-export default function ConcursanteForm({ type, concursante }: {
-    type: 'create' | 'edit', concursante?: ConcursanteFull
+export default function ConcursanteForm({ type, concursante, concursos }: {
+    type: 'create' | 'edit', concursante?: ConcursanteFull, concursos?: Concurso[]
 }) {
     const [isPending, startTransition] = useTransition();
 
@@ -26,10 +27,15 @@ export default function ConcursanteForm({ type, concursante }: {
             ...concursante,
         }
     });
-
+    console.log(concursos)
     const router = useRouter();
     const { errors } = formState;
-
+    const onDelete = () => {
+        startTransition(async () => {
+            await deleteConcursante(concursante?.id as string);
+            router.push("/admin/concursantes")
+        })
+    }
     const onSubmit = async (data: Concursante) => {
         startTransition(async () => {
             try {
@@ -49,9 +55,9 @@ export default function ConcursanteForm({ type, concursante }: {
     };
 
     return (
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col md:grid grid-cols-2 lg:grid-cols-3 gap-4">
 
-            <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md mx-auto">
+            <div className="bg-white rounded-lg shadow-lg p-6 w-full">
                 <h1 className="text-xl font-bold text-gray-900">{type === "create" ? "Crear" : "Editar"} Concursante</h1>
 
                 {/* Botón de importar Excel (simulado) */}
@@ -95,7 +101,7 @@ export default function ConcursanteForm({ type, concursante }: {
                     </div>
 
                     {/* Botones de acción */}
-                    <div className="flex justify-end">
+                    <div className="flex gap-2 justify-end">
                         <Button
                             type="submit"
                             className={`bg-blue-500 hover:bg-blue-600 text-white ${isPending ? "opacity-75 cursor-not-allowed" : ""
@@ -104,25 +110,23 @@ export default function ConcursanteForm({ type, concursante }: {
                         >
                             {isPending ? "Guardando..." : "Guardar"}
                         </Button>
-                        <Button
-                            asChild
-                            type="button"
-                            className="ml-4 inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg bg-white text-gray-700 hover:bg-gray-100 focus:outline-none focus:border-blue-500"
-                        >
-                            <Link href={"/admin/concursantes"}>
-                                Cancelar
-                            </Link>
-                        </Button>
+                        {
+                            type == "edit" && (
+                                <Button onClick={onDelete} disabled={isPending} variant={"destructive"}>
+                                    <MdOutlineDelete size={24} />
+                                </Button>
+                            )
+                        }
                     </div>
                 </form>
             </div>
             {
                 type == "edit" && (
-                   <ConcursanteDatos concursante={concursante as ConcursanteFull} />
+                    <ConcursanteDatos concursante={concursante as ConcursanteFull} />
                 )
             }
             {
-                type == "edit" && <div className="bg-white rounded-lg shadow-lg p-4 w-full max-w-md mx-auto">
+                type == "edit" && <div className="bg-white rounded-lg shadow-lg p-4 w-full">
                     <h2 className="font-bold">Lista de concursos inscritos</h2>
                     {
                         concursante?.participaciones.map(participacion => {

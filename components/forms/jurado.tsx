@@ -9,7 +9,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { createJurado } from "@/actions/createJurado";
 import { useRouter } from "next/navigation";
 import { usuario } from "@prisma/client";
-import {updateJurado} from "@/actions/updateJurado";
+import { updateJurado } from "@/actions/updateJurado";
+import { MdOutlineDelete } from "react-icons/md";
+import { deleteJurado } from "@/actions/deleteJurado";
 
 export default function JuradoForm({ type, jurado }: { type: 'create' | 'edit', jurado?: usuario }) {
     const [isPending, startTransition] = useTransition();
@@ -23,6 +25,13 @@ export default function JuradoForm({ type, jurado }: { type: 'create' | 'edit', 
     });
     const router = useRouter();
     const { errors } = formState;
+
+    const onDelete =  () => {
+        startTransition(async()=>{
+            await deleteJurado(jurado?.id as string)
+            router.push("/admin/jurados")
+        })
+    }
 
     const onSubmit = async (data: Usuario | UsuarioUpdate) => {
         startTransition(async () => {
@@ -100,7 +109,7 @@ export default function JuradoForm({ type, jurado }: { type: 'create' | 'edit', 
                 </div>
 
                 {/* Botones de acción */}
-                <div className="flex justify-end">
+                <div className="flex gap-2 justify-end">
                     <Button
                         type="submit"
                         className={`bg-blue-500 hover:bg-blue-600 text-white ${isPending ? "opacity-75 cursor-not-allowed" : ""
@@ -109,11 +118,13 @@ export default function JuradoForm({ type, jurado }: { type: 'create' | 'edit', 
                     >
                         {isPending ? "Guardando..." : "Guardar"}
                     </Button>
-                    <Link href="/admin/jurados">
-                        <p className="ml-4 inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg bg-white text-gray-700 hover:bg-gray-100 focus:outline-none focus:border-blue-500">
-                            Cancelar
-                        </p>
-                    </Link>
+                    {
+                        type == "edit" && (
+                            <Button onClick={onDelete} disabled={isPending} variant={"destructive"}>
+                                <MdOutlineDelete size={24} />
+                            </Button>
+                        )
+                    }
                 </div>
             </form>
         </div>
