@@ -56,7 +56,7 @@ export default function ListaConcursateTodo({ concursantes, concursos }: ListaCo
     return (
         <div>
             <h2 className="text-2xl font-bold mb-4">Listas de concursantes</h2>
-            
+
             {/* Search Input */}
             <div className="mb-4">
                 <Input
@@ -99,16 +99,23 @@ export default function ListaConcursateTodo({ concursantes, concursos }: ListaCo
 
 const Concursante = ({ concursante }: { concursante: ConcursanteInclude }) => {
     const hasNoParticipation = concursante.participaciones.length === 0;
-
+    const userTest = concursante.prueba
     return (
         <Link href={`/admin/concursantes/editar/${concursante.id}`}>
-            <div className="cursor-pointer flex items-center justify-between hover:bg-gray-200 rounded-lg mb-4 p-4 border border-gray-300 transition duration-300">
-                <p className="text-lg text-gray-800">{concursante.nombre}</p>
-                {hasNoParticipation && (
-                    <span className="ml-4 bg-red-500 text-white text-xs px-2 py-1 rounded-full">
-                        Sin concurso
-                    </span>
-                )}
+            <div className="cursor-pointer flex flex-col md:flex-row md:items-center justify-between hover:bg-gray-200 rounded-lg mb-4 p-4 border border-gray-300 transition duration-300">
+                <p className="text-sm md:text-lg text-gray-800">{concursante.nombre}</p>
+                <div className="space-x-2 mt-2 md:mt-0">
+                    {hasNoParticipation && (
+                        <span className="md:ml-4 bg-red-500 text-white text-xs px-2 py-1 rounded-full">
+                            Sin concurso
+                        </span>
+                    )}
+                    {userTest && (
+                        <span className="md:ml-4 bg-green-500 text-white text-xs px-2 py-1 rounded-full">
+                            Prueba
+                        </span>
+                    )}
+                </div>
             </div>
         </Link>
     );

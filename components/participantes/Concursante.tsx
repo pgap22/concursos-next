@@ -13,6 +13,8 @@ export function Concursante({ concursante, concurso_id }: {
 }) {
     const inscrito = concursante.participaciones.some(participacion => participacion.id_concurso == concurso_id)
     const [cargando, startTransition] = useTransition()
+    const hasNoParticipation = concursante.participaciones.length === 0;
+    const userTest = concursante.prueba
 
     const OnParticipacion = () => {
         startTransition(async () => {
@@ -27,7 +29,19 @@ export function Concursante({ concursante, concurso_id }: {
     return (
         <div className="p-4 border bg-white rounded-md">
             <p>{concursante.nombre}</p>
-            <p>{concursante.institucion}</p>
+            {/* <p>{concursante.institucion}</p> */}
+            <div className="space-x-2 my-2 md:mt-0">
+                    {hasNoParticipation && (
+                        <span className="bg-red-500 text-white text-xs px-2 py-1 rounded-full">
+                            Sin concurso
+                        </span>
+                    )}
+                    {userTest && (
+                        <span className="bg-green-500 text-white text-xs px-2 py-1 rounded-full">
+                            Prueba
+                        </span>
+                    )}
+                </div>
 
             <Button disabled={cargando} onClick={OnParticipacion} variant={inscrito ? "outline" : "default"}>
                 {

@@ -234,7 +234,16 @@ export async function getRankingConcurso(id_concurso: string) {
     try {
         const ranking = await prisma.participacionConcursante.findMany({
             where: {
-                id_concurso
+                AND: [
+                    {
+                        concursante: {
+                            prueba: false
+                        }
+                    },
+                    {
+                        id_concurso
+                    }
+                ]
             },
 
             include: {

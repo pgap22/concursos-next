@@ -94,6 +94,7 @@ model concursante {
   institucion String
   orden       Int?
   createdAt   DateTime @default(now())
+  prueba      Boolean @default(false)
 
   participaciones           ParticipacionConcursante[]
   DatosGeneralesConcursante DatosGeneralesConcursante[]

@@ -15,7 +15,7 @@ export const updateConcursante = async (id: string ,data : Concursante) : Promis
         revalidatePath("/admin/concursantes")
         return concursante
    } catch (error) {
- 
+        console.log(error)
         return {error: "Hubo un error en el servidor"}
    }
 }
