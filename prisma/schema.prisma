@@ -35,6 +35,7 @@ model usuario {
   nombre           String
   usuario          String
   password         String
+  createdAt DateTime @default(now())
   rol              roles
   JuradosConcursos JuradosConcursos[]
   puntajes         PuntajesConcursante[]
@@ -102,6 +103,7 @@ model DatosGeneralesConcursante {
   id    String @id @default(uuid())
   campo String
   valor String
+  createdAt DateTime @default(now())
 
   id_concursante String
   concursante    concursante @relation(fields: [id_concursante], references: [id], onDelete: Cascade, onUpdate: Cascade)

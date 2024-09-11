@@ -7,10 +7,10 @@ export default async function EditarConcursante({ params }: { params: { id: stri
     const concursante = await getConcursanteByIdWithConcursos(params.id)
     if (!concursante) return redirect("/concursantes")
 
-    // const concursos = await getConcursosEnableToParticipate(params.id);
+    const concursos = await getConcursosEnableToParticipate(params.id);
     return (
         <>
-            <ConcursanteForm type='edit' concursante={concursante}  />
+            <ConcursanteForm type='edit' concursante={concursante} concursos={concursos}  />
         </>
     );
 }

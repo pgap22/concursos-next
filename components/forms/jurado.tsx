@@ -12,6 +12,7 @@ import { usuario } from "@prisma/client";
 import { updateJurado } from "@/actions/updateJurado";
 import { MdOutlineDelete } from "react-icons/md";
 import { deleteJurado } from "@/actions/deleteJurado";
+import Back from "../Back";
 
 export default function JuradoForm({ type, jurado }: { type: 'create' | 'edit', jurado?: usuario }) {
     const [isPending, startTransition] = useTransition();
@@ -26,8 +27,8 @@ export default function JuradoForm({ type, jurado }: { type: 'create' | 'edit', 
     const router = useRouter();
     const { errors } = formState;
 
-    const onDelete =  () => {
-        startTransition(async()=>{
+    const onDelete = () => {
+        startTransition(async () => {
             await deleteJurado(jurado?.id as string)
             router.push("/admin/jurados")
         })
@@ -52,6 +53,8 @@ export default function JuradoForm({ type, jurado }: { type: 'create' | 'edit', 
 
     return (
         <div className="bg-white rounded-lg shadow-lg p-4 w-full max-w-md mx-auto">
+            <Back href={"/admin/jurados"} />
+
             <h1 className="text-3xl my-2 font-bold text-gray-900">{type == "create" ? "Crear" : "Editar"} Jurado</h1>
 
             {/* Botón de importar Excel (simulado) */}

@@ -8,30 +8,36 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { updateConcurso } from "@/actions/updateConcurso";
 import { useRouter } from "next/navigation"; // Importamos useRouter desde next/navigation
 import { createConcurso } from "@/actions/createConcurso";
-import { Concurso, estadoConcurso, Prisma, Rubrica } from "@prisma/client";
+import { Concurso, Rubrica } from "@prisma/client";
 import { Textarea } from "../ui/textarea";
 import Link from "next/link";
-import { Alert } from "../ui/alert";
 import dayjs from "dayjs"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { getStatusProperties } from "@/lib/estadoConcurso";
 import { cambiarEstadoConcurso } from "@/actions/cambiarEstadoConcurso";
-import { MdOutlineDelete } from "react-icons/md";
+import { MdOutlineDelete, MdWarningAmber } from "react-icons/md";
 import { deleteConcurso } from "@/actions/deleteConcurso";
-export default function ConcursoForm({ type, concurso, rubricas }: { type: 'create' | 'edit', concurso?: Concurso, rubricas?: Rubrica[] }) {
+import { ConcursoData } from "@/types/ConcursoData";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { cn } from "@/lib/utils";
+import Back from "../Back";
+
+export default function ConcursoForm({ type, concurso, rubricas }: { type: 'create' | 'edit', concurso?: ConcursoData, rubricas?: Rubrica[] }) {
     const [isPending, startTransition] = useTransition();
 
     const { register, handleSubmit, formState, setError, control } = useForm<ConcursoRegister>({
         resolver: zodResolver(concursoSchema),
         defaultValues: {
-            ...concurso,
+            nombre: concurso?.nombre,
+            descripcion: concurso?.descripcion,
+            id_rubrica: concurso?.id_rubrica as string,
             fecha: dayjs().format("YYYY-MM-DDTHH:mm")
         }
     });
     const router = useRouter();
     const { errors } = formState;
-    const onDelete = ()=>{
-        startTransition(async()=>{
+    const onDelete = () => {
+        startTransition(async () => {
             await deleteConcurso(concurso?.id as string)
             router.push("/admin/concursos")
         })
@@ -55,38 +61,54 @@ export default function ConcursoForm({ type, concurso, rubricas }: { type: 'crea
 
 
     return (
-        <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md mx-auto">
-            <Link href={"/admin/concursos/"}>Volver</Link>
+        <div className={cn("bg-white rounded-lg shadow-lg p-6 w-full", type == "edit" ? "" : "max-w-md mx-auto")}>
+            <Back href={"/admin/concursos/"} />
 
             <h1 className="text-3xl mb-2 font-bold text-gray-900">{type === "create" ? "Crear" : "Editar"} Concurso</h1>
 
             {
                 type == "edit" && (
-                    <div className="flex flex-col gap-2 my-2 mb-6">
-                        <Button asChild >
-                            <Link href={"/admin/concursos/" + concurso?.id + "/participantes"}>
-                                Ver participantes
-                            </Link>
-                        </Button>
-                        <Button asChild >
-                            <Link href={"/admin/concursos/" + concurso?.id + "/jurados"}>
-                                Ver Jurados
-                            </Link>
-                        </Button>
-                        <Button asChild >
-                            <Link href={"/admin/concursos/" + concurso?.id + "/ranking"}>
-                                Ver Ranking
-                            </Link>
-                        </Button>
-                    </div>
+                    <>
+
+                        <div className="flex flex-col gap-2 my-2 mb-6">
+                            {!concurso?.participantes.length && (
+                                <Alert className="bg-gray-100">
+                                    <MdWarningAmber className="h-6 w-6  !text-gray-500" />
+                                    <AlertTitle>Advertencia</AlertTitle>
+                                    <AlertDescription>
+                                        No tienes participantes !
+                                    </AlertDescription>
+                                </Alert>
+                            )}
+                            {!concurso?.JuradosConcursos.length && (
+                                <Alert className="bg-gray-100">
+                                    <MdWarningAmber className="h-6 w-6  !text-gray-500" />
+                                    <AlertTitle>Advertencia</AlertTitle>
+                                    <AlertDescription>
+                                        No tienes jurados !
+                                    </AlertDescription>
+                                </Alert>
+                            )}
+                            <Button asChild >
+                                <Link href={"/admin/concursos/" + concurso?.id + "/participantes"}>
+                                    Ver participantes
+                                </Link>
+                            </Button>
+                            <Button asChild >
+                                <Link href={"/admin/concursos/" + concurso?.id + "/jurados"}>
+                                    Ver Jurados
+                                </Link>
+                            </Button>
+                            <Button asChild >
+                                <Link href={"/admin/concursos/" + concurso?.id + "/ranking"}>
+                                    Ver Ranking
+                                </Link>
+                            </Button>
+                        </div>
+                    </>
                 )
             }
-            {/* Botón de importar Excel (simulado) */}
-            {/* <div className="my-2 mb-6">
-                <Button>Importar Excel</Button>
-            </div> */}
 
-            {/* Formulario de creación de concurso */}
             <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
                 <div className="flex flex-col space-y-2">
                     {errors.root && (
@@ -144,7 +166,7 @@ export default function ConcursoForm({ type, concurso, rubricas }: { type: 'crea
                         render={({ field }) => {
                             return (
                                 <Select onValueChange={field.onChange} value={field.value as string}>
-                                    <SelectTrigger>
+                                    <SelectTrigger className={cn(errors.id_rubrica && ("border-red-500"))}>
                                         <SelectValue placeholder="Selecciona una rubrica" />
                                     </SelectTrigger>
                                     <SelectContent>
@@ -161,6 +183,10 @@ export default function ConcursoForm({ type, concurso, rubricas }: { type: 'crea
                             )
                         }}
                     />
+                    {errors.id_rubrica && (
+                        <span className="text-red-500 text-sm">Rubrica es requerida</span>
+                    )}
+
                     {
                         (concurso?.estado) && (
                             <div className="space-y-2">
@@ -168,6 +194,7 @@ export default function ConcursoForm({ type, concurso, rubricas }: { type: 'crea
                             </div>
                         )
                     }
+
                 </div>
 
                 {/* Botones de acción */}

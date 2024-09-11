@@ -53,5 +53,9 @@ export async function deleteRubrica(id: string): Promise<Rubrica | null> {
 
 // Get all rubricas
 export async function getAllRubricas(): Promise<Rubrica[]> {
-    return prisma.rubrica.findMany();
+    return prisma.rubrica.findMany({
+        orderBy: {
+            createdAt: 'asc'
+        }
+    });
 }

@@ -20,7 +20,11 @@ export async function createDatosGeneralesConcursante(data: {
   
   // Leer (obtener todos)
   export async function getAllDatosGeneralesConcursantes() {
-    return await prisma.datosGeneralesConcursante.findMany();
+    return await prisma.datosGeneralesConcursante.findMany({
+         orderBy: {
+            createdAt: 'asc'
+        }
+    });
   }
   
   // Actualizar

@@ -1,20 +1,21 @@
 import { auth } from "@/auth";
+import Back from "@/components/Back";
 import { getResultadoByParticipacion } from "@/lib/concursos"
-import Link from "next/link";
 import { redirect } from "next/navigation";
 
 export default async function ResultadosPage({ params }: { params: { id: string, id_participacion: string } }) {
     const session = await auth();
     const resultados = await getResultadoByParticipacion(params.id_participacion, session?.user.id as string);
     if (!resultados) return redirect("/jurado/concurso/" + params.id + "/concursantes");
-    
+
     const puntosTotales = resultados.participacion.puntajes.reduce((acc, puntaje) => acc + (+puntaje.puntaje), 0)
     const criterios = Object.keys(resultados.agrupadosPorCriterio)
 
     console.log(resultados)
     return (
         <div className="p-4">
-            <Link href={"/jurado/concurso/" + params.id + "/concursantes"}>Volver</Link>
+            <Back href={"/jurado/concurso/" + params.id + "/concursantes"} />
+
             <h2 className="font-bold text-2xl mb-4">Resultados de {resultados.participacion.concursante.nombre}</h2>
             <p className="font-bold border p-4 rounded-md w-fit mb-4">Puntaje Total: {puntosTotales}</p>
             <div className="space-y-4">

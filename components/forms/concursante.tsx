@@ -14,7 +14,8 @@ import { ConcursanteFull } from "@/types/ConcursanteFull";
 import ConcursanteDatos from "./concursanteDatos";
 import { MdOutlineDelete } from "react-icons/md";
 import { deleteConcursante } from "@/actions/deleteConcursante";
-
+import { cn } from "@/lib/utils";
+import ConcursanteListaConcurso from "./ConcursanteListaConcurso";
 
 export default function ConcursanteForm({ type, concursante, concursos }: {
     type: 'create' | 'edit', concursante?: ConcursanteFull, concursos?: Concurso[]
@@ -27,7 +28,6 @@ export default function ConcursanteForm({ type, concursante, concursos }: {
             ...concursante,
         }
     });
-    console.log(concursos)
     const router = useRouter();
     const { errors } = formState;
     const onDelete = () => {
@@ -55,7 +55,7 @@ export default function ConcursanteForm({ type, concursante, concursos }: {
     };
 
     return (
-        <div className="flex flex-col md:grid grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className={cn("flex flex-col gap-4", type == "edit" ? "md:grid grid-cols-2 lg:grid-cols-3" : "max-w-xl mx-auto")}>
 
             <div className="bg-white rounded-lg shadow-lg p-6 w-full">
                 <h1 className="text-xl font-bold text-gray-900">{type === "create" ? "Crear" : "Editar"} Concursante</h1>
@@ -122,23 +122,16 @@ export default function ConcursanteForm({ type, concursante, concursos }: {
             </div>
             {
                 type == "edit" && (
-                    <ConcursanteDatos concursante={concursante as ConcursanteFull} />
+                    <>
+                        <ConcursanteDatos concursante={concursante as ConcursanteFull} />
+                        <div className="bg-white rounded-lg shadow-lg p-4 w-full">
+                            <h2 className="font-bold">Agregar a concurso</h2>
+                            <ConcursanteListaConcurso concursante={concursante as ConcursanteFull} concursos={concursos as Concurso[]} />
+                        </div>
+                    </>
                 )
             }
-            {
-                type == "edit" && <div className="bg-white rounded-lg shadow-lg p-4 w-full">
-                    <h2 className="font-bold">Lista de concursos inscritos</h2>
-                    {
-                        concursante?.participaciones.map(participacion => {
-                            return (
-                                <section className="my-2 last:border-none border-b py-4">
-                                    <p>{participacion.concurso.nombre}</p>
-                                </section>
-                            )
-                        })
-                    }
-                </div>
-            }
+
         </div>
     );
 }

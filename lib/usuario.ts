@@ -35,6 +35,9 @@ export async function getUsuariosByRol(rol: roles | undefined): Promise<usuario[
     return prisma.usuario.findMany({
         where: {
             rol
+        },
+        orderBy: {
+            createdAt: 'asc'
         }
     });
 }
@@ -49,6 +52,9 @@ export async function getJurados(): Promise<Prisma.usuarioGetPayload<{
         },
         include: {
             JuradosConcursos: true
+        },
+        orderBy: {
+            createdAt: 'asc'
         }
     });
 }

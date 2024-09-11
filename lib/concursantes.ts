@@ -27,10 +27,11 @@ export async function getConcursanteByIdWithConcursos(id: string): Promise<Prism
             participaciones: {
                 include: {
                     concurso: true,
-                    
+
                 }
             }
-        }
+        },
+
     });
 }
 
@@ -45,8 +46,35 @@ export async function deleteconcursante(id: string): Promise<concursante | null>
 }
 
 // Get all concursantes
-export async function getAllconcursantes(): Promise<concursante[]> {
-    return prisma.concursante.findMany();
+export async function getAllconcursantes(): Promise<Prisma.concursanteGetPayload<{
+    include: {
+        participaciones: {
+            select: {
+                concurso: {
+                    select: {
+                        id: true
+                    }
+                }
+            }
+        }
+    }
+}>[]> {
+    return prisma.concursante.findMany({
+        orderBy: {
+            createdAt: 'asc'
+        },
+        include: {
+            participaciones: {
+                select: {
+                    concurso: {
+                        select: {
+                            id: true
+                        }
+                    }
+                }
+            }
+        }
+    });
 }
 export async function getAllconcursantesWithParticipaciones(): Promise<Prisma.concursanteGetPayload<{
     include: {
@@ -56,6 +84,9 @@ export async function getAllconcursantesWithParticipaciones(): Promise<Prisma.co
     return prisma.concursante.findMany({
         include: {
             participaciones: true
+        },
+        orderBy: {
+            createdAt: 'asc'
         }
     });
 }

@@ -1,3 +1,4 @@
+import Back from "@/components/Back";
 import { Button } from "@/components/ui/button";
 import { getconcursoById } from "@/lib/concursos";
 import { LucideClipboardEdit } from "lucide-react";
@@ -12,7 +13,7 @@ export default async function ConcursPageJurado({ params }: { params: { id: stri
 
     return (
         <div className="p-4">
-            <Link href={"/jurado"}>Volver</Link>
+            <Back href={"/jurado"} />
             <h1 className="text-2xl font-bold mb-4">{concurso.nombre}</h1>
 
             {concurso.estado === "evaluacion" && (

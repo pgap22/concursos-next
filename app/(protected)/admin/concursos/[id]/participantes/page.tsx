@@ -1,3 +1,4 @@
+import Back from "@/components/Back";
 import { ListaConcursante } from "@/components/ListaConcurstantes";
 import ParticiapanteItemList from "@/components/ParticipanteItemList";
 import { Concursante } from "@/components/participantes/Concursante";
@@ -19,7 +20,8 @@ export default async function ParticipantesConcursos({ params }: { params: { id:
 
     return (
         <div className="bg-white rounded-lg shadow-md p-4 mb-4">
-            <Link href={"/admin/concursos/" + concurso.id + "/editar"}>Volver</Link>
+            <Back href={"/admin/concursos/" + concurso.id + "/editar"}/>
+
             <h2 className="text-xl font-bold mb-4">Participantes</h2>
 
             {/* Sección para agregar participantes */}

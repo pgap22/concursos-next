@@ -1,3 +1,4 @@
+import Back from "@/components/Back";
 import { getRankingConcurso } from "@/lib/concursos"
 import Link from "next/link";
 
@@ -9,9 +10,8 @@ export default async function RankingConcurso({ params }: { params: { id: string
 
     return (
         <>
-            <Link href={"/admin/concursos/" + params.id + "/editar"}>
-                <p className="my-2">Volver</p>
-            </Link>
+            <Back href={"/admin/concursos/" + params.id + "/editar"} />
+
             <h2 className="font-bold text-2xl mb-4">Ranking</h2>
             <div className="space-y-4">
                 {ranking?.map(persona => (<div className="border p-4 bg-white rounded-md">

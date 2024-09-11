@@ -3,18 +3,18 @@
 import prisma from "@/lib/prisma"
 import { revalidatePath } from "next/cache"
 
-export const toggleInscripcionConcursante = async (id_concursante:string, id_concurso:string) => {
+export const toggleInscripcionConcursante = async (id_concursante: string, id_concurso: string, formConcursante?: boolean) => {
     try {
         const isParticipante = await prisma.participacionConcursante.findFirst({
             where: {
                 AND: [
-                    {id_concursante},
-                    {id_concurso}
+                    { id_concursante },
+                    { id_concurso }
                 ]
             }
         })
 
-        if(isParticipante){
+        if (isParticipante) {
             await prisma.participacionConcursante.delete({
                 where: {
                     id: isParticipante.id
@@ -31,7 +31,11 @@ export const toggleInscripcionConcursante = async (id_concursante:string, id_con
             }
         })
 
-        console.log(isParticipante)
+        if (formConcursante) {
+            revalidatePath("/admin/concursante/editar/[id]", "page")
+            return true
+        }
+        
         revalidatePath("/admin/concursos/[id]/participantes", "page")
         return true
 

@@ -1,13 +1,24 @@
 import { Concurso, Prisma } from '@prisma/client';
 import prisma from './prisma';
 import { auth } from '@/auth';
+import { ConcursoData } from '@/types/ConcursoData';
 // Create a new concurso
 export async function createconcurso(data: Concurso): Promise<Concurso> {
     return prisma.concurso.create({ data });
 }
 // Get a single concurso by ID
-export async function getconcursoById(id: string): Promise<Concurso | null> {
-    return prisma.concurso.findUnique({ where: { id } });
+export async function getconcursoById(id: string): Promise<ConcursoData | null> {
+    return prisma.concurso.findUnique({
+        where: { id },
+        include: {
+            participantes: {
+                select: { id: true }
+            },
+            JuradosConcursos: {
+                select: { id: true }
+            }
+        }
+    });
 }
 export async function getconcursoByIdWithParticipantes(id: string): Promise<Prisma.ConcursoGetPayload<{
     include: {
@@ -62,7 +73,11 @@ export async function deleteconcurso(id: string): Promise<Concurso | null> {
 
 // Get all concursos
 export async function getAllconcursos(): Promise<Concurso[]> {
-    return prisma.concurso.findMany();
+    return prisma.concurso.findMany({
+        orderBy: {
+            createdAt: 'asc'
+        }
+    });
 }
 
 export async function getConcursosByAuth() {
@@ -71,6 +86,9 @@ export async function getConcursosByAuth() {
         // include: {
         //     JuradosConcursos: true
         // },
+        orderBy: {
+            createdAt: 'asc'
+        },
         where: {
             JuradosConcursos: {
                 some: {
@@ -89,6 +107,9 @@ export async function getConcursosEnableToParticipate(id_concursante: string) {
                     id_concursante
                 }
             }
+        },
+        orderBy: {
+            createdAt: 'asc'
         }
     })
     return concursos
@@ -112,6 +133,9 @@ export async function getParticipantesConcursoById(id: string) {
                     puntajes: true,
                 }
             }
+        },
+        orderBy: {
+            createdAt: 'asc'
         }
         // include: {
         //     participaciones: {
@@ -200,7 +224,7 @@ export async function getResultadoByParticipacion(id_participacion: string, id_j
 
         console.log(agrupadosPorCriterio)
 
-        return {participacion, agrupadosPorCriterio }
+        return { participacion, agrupadosPorCriterio }
     } catch (error) {
         console.log(error)
     }
@@ -212,6 +236,7 @@ export async function getRankingConcurso(id_concurso: string) {
             where: {
                 id_concurso
             },
+
             include: {
                 concursante: {
                     include: {
