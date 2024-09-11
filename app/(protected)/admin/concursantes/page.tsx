@@ -5,7 +5,6 @@ import { getAllconcursantes } from "@/lib/concursantes";
 import { getAllconcursos } from "@/lib/concursos";
 
 import Link from "next/link";
-import { MdOutlineChevronLeft } from "react-icons/md";
 
 export default async function Concursantes() {
     const concursantes = await getAllconcursantes()
@@ -17,7 +16,7 @@ export default async function Concursantes() {
             <h1 className="text-3xl font-bold mb-6">Concursantes</h1>
             <div className="flex justify-between items-center mb-6">
                 <Button asChild className="bg-purple-500 text-white hover:bg-purple-600">
-                    <Link href="/admin/concursantes/crear">Crear Concursnate</Link>
+                    <Link href="/admin/concursantes/crear">Crear Concursante</Link>
                 </Button>
             </div>
             <ListaConcursateTodo concursantes={concursantes} concursos={concursos} />

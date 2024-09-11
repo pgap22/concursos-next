@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useTransition } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation"; // Importamos useRouter desde next/navigation
 import { Concurso } from "@prisma/client";
@@ -16,13 +16,15 @@ import { MdOutlineDelete } from "react-icons/md";
 import { deleteConcursante } from "@/actions/deleteConcursante";
 import { cn } from "@/lib/utils";
 import ConcursanteListaConcurso from "./ConcursanteListaConcurso";
+import Back from "../Back";
+import { Switch } from "../ui/switch";
 
 export default function ConcursanteForm({ type, concursante, concursos }: {
     type: 'create' | 'edit', concursante?: ConcursanteFull, concursos?: Concurso[]
 }) {
     const [isPending, startTransition] = useTransition();
 
-    const { register, handleSubmit, formState, setError } = useForm<Concursante>({
+    const { register, handleSubmit, formState, setError, control } = useForm<Concursante>({
         resolver: zodResolver(concursanteSchema),
         defaultValues: {
             ...concursante,
@@ -58,14 +60,8 @@ export default function ConcursanteForm({ type, concursante, concursos }: {
         <div className={cn("flex flex-col gap-4", type == "edit" ? "md:grid grid-cols-2 lg:grid-cols-3" : "max-w-xl mx-auto")}>
 
             <div className="bg-white rounded-lg shadow-lg p-6 w-full">
+                <Back href="/admin/concursantes" />
                 <h1 className="text-xl font-bold text-gray-900">{type === "create" ? "Crear" : "Editar"} Concursante</h1>
-
-                {/* Botón de importar Excel (simulado) */}
-                {/* <div className="my-2 mb-6">
-                <Button>Importar Excel</Button>
-            </div> */}
-
-                {/* Formulario de creación de concurso */}
                 <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
                     <div className="flex flex-col space-y-2">
                         {errors.root && (
@@ -95,6 +91,19 @@ export default function ConcursanteForm({ type, concursante, concursos }: {
                             className={`border border-gray-300 rounded-lg px-4 py-2 focus:outline-none ${errors.institucion ? "border-red-500" : ""
                                 }`}
                         />
+                        {errors.institucion && (
+                            <span className="text-red-500 text-sm">La institucion es requerida</span>
+                        )}
+                        <div className="flex items-center gap-4">
+                            <label htmlFor="descripcion" className="text-sm font-medium text-gray-700">
+                                Usuario Prueba
+                            </label>
+                            <Controller 
+                                control={control}
+                                name="prueba"
+                                render={({field})=>(<Switch defaultChecked={field.value} onCheckedChange={(d)=> field.onChange(d)}/>)}
+                            />
+                        </div>
                         {errors.institucion && (
                             <span className="text-red-500 text-sm">La institucion es requerida</span>
                         )}
