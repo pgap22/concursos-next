@@ -26,7 +26,7 @@ export default async function ConcursosPage() {
                         <Link key={concurso.id} href={`/admin/concursos/${concurso.id}/editar`}>
                             <div className="cursor-pointer hover:bg-gray-200 rounded-lg mb-4 p-4 border border-gray-300 transition duration-300">
                                 <p className="text-lg text-gray-800">{concurso.nombre}</p>
-                                <p className="text-sm text-gray-500">{concurso.descripcion}</p>
+                                <p className="text-sm text-gray-500 whitespace-pre-line">{concurso.descripcion}</p>
                                 <p className="text-sm text-gray-500"><span className="font-bold">Fecha</span>: {dayjs(concurso.fecha).locale('es').format('LLLL')}</p>
                             </div>
                         </Link>
