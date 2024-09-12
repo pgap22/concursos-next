@@ -9,7 +9,7 @@ import { LuTrophy } from "react-icons/lu";
 
 export default async function ConcursPageJurado({ params }: { params: { id: string } }) {
     const concurso = await getconcursoById(params.id);
-    if (!concurso) return redirect("/jurados");
+    if (!concurso) return redirect("/jurado");
 
     return (
         <div className="p-4">

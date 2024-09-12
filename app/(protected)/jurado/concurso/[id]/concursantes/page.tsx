@@ -1,12 +1,19 @@
 import { auth } from "@/auth";
 import Back from "@/components/Back";
 import { Button } from "@/components/ui/button";
-import { getParticipantesConcursoById } from "@/lib/concursos";
+import { getconcursoById, getParticipantesConcursoById } from "@/lib/concursos";
 import { concursante, Prisma } from "@prisma/client";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 export default async function ConcursantesEvaluacion({ params }: { params: { id: string } }) {
     const session = await auth();
+    const concurso = await getconcursoById(params.id)
+
+    if(!concurso || concurso.estado !== "evaluacion"){
+        return redirect("/jurado")
+    }
+
     const participantes = await getParticipantesConcursoById(params.id);
     return (
         <div className="p-4">

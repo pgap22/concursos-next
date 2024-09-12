@@ -1,12 +1,16 @@
 import Back from "@/components/Back";
-import { getRankingConcurso } from "@/lib/concursos"
+import { getconcursoById, getRankingConcurso } from "@/lib/concursos"
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 export default async function RankingConcurso({ params }: { params: { id: string } }) {
+    const concurso = await getconcursoById(params.id);
+
+    if(!concurso || concurso.estado !== "finalizado"){
+        return redirect("/jurado")
+    }
 
     const ranking = await getRankingConcurso(params.id);
-
-    console.log(ranking)
 
     return (
         <>
