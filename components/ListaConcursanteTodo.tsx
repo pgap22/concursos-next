@@ -51,7 +51,7 @@ export default function ListaConcursateTodo({ concursantes, concursos }: ListaCo
             : concursosActive.length
                 ? concursante.participaciones.some(concursoInscrito => concursosActive.includes(concursoInscrito.concurso.id))
                 : true
-    );
+    ).sort((a, b) => a.nombre.toLowerCase().localeCompare(b.nombre.toLowerCase()));
 
     return (
         <div>

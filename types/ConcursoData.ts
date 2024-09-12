@@ -6,7 +6,7 @@ export type ConcursoData = Prisma.ConcursoGetPayload<{
             select: { id: true }
         },
         JuradosConcursos: {
-            select: { id: true }
+            select: { id: true, id_jurado: true }
         }
     }
 }>

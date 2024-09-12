@@ -1,7 +1,10 @@
 import Back from "@/components/Back";
 import { Button } from "@/components/ui/button";
 import { getAllconcursos } from "@/lib/concursos";
-
+import localizedFormat from 'dayjs/plugin/localizedFormat';
+import 'dayjs/locale/es'; // Import the Spanish locale
+import dayjs from "dayjs";
+dayjs.extend(localizedFormat)
 import Link from "next/link";
 
 export default async function ConcursosPage() {
@@ -23,6 +26,8 @@ export default async function ConcursosPage() {
                         <Link key={concurso.id} href={`/admin/concursos/${concurso.id}/editar`}>
                             <div className="cursor-pointer hover:bg-gray-200 rounded-lg mb-4 p-4 border border-gray-300 transition duration-300">
                                 <p className="text-lg text-gray-800">{concurso.nombre}</p>
+                                <p className="text-sm text-gray-500">{concurso.descripcion}</p>
+                                <p className="text-sm text-gray-500"><span className="font-bold">Fecha</span>: {dayjs(concurso.fecha).locale('es').format('LLLL')}</p>
                             </div>
                         </Link>
                     ))}

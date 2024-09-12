@@ -20,7 +20,7 @@ export const ListaJurado = ({ jurados, concurso_id }: {
                 <Input onChange={e=> setQuery(e.target.value)} placeholder="Buscar" />
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                {jurados.filter(concursante => (!!query && concursante.nombre.toLowerCase().includes(query) || query=="*")).map(concursante => (
+                {jurados.filter(concursante => (!!query && concursante.nombre.toLowerCase().includes(query.toLowerCase()) || query=="*")).map(concursante => (
                     <JuradoConcurso key={concursante.id} jurado={concursante} concurso_id={concurso_id} />
                 ))}
             </div>

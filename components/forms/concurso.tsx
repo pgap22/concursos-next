@@ -15,12 +15,13 @@ import dayjs from "dayjs"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { getStatusProperties } from "@/lib/estadoConcurso";
 import { cambiarEstadoConcurso } from "@/actions/cambiarEstadoConcurso";
-import { MdOutlineDelete, MdWarningAmber } from "react-icons/md";
+import { MdOutlineCopyAll, MdOutlineDelete, MdWarningAmber } from "react-icons/md";
 import { deleteConcurso } from "@/actions/deleteConcurso";
 import { ConcursoData } from "@/types/ConcursoData";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { cn } from "@/lib/utils";
 import Back from "../Back";
+import { duplicarConcurso } from "@/actions/duplicarConcurso";
 
 export default function ConcursoForm({ type, concurso, rubricas }: { type: 'create' | 'edit', concurso?: ConcursoData, rubricas?: Rubrica[] }) {
     const [isPending, startTransition] = useTransition();
@@ -42,6 +43,19 @@ export default function ConcursoForm({ type, concurso, rubricas }: { type: 'crea
             router.push("/admin/concursos")
         })
     }
+
+    const onDuplicarConcurso = () => {
+        startTransition(async () => {
+            const concursoCopia = await duplicarConcurso(concurso as ConcursoData)
+            if (!concursoCopia) {
+                setError('root', { message: "Hubo un error" });
+                return
+            }
+
+            router.push("/admin/concursos/" + concursoCopia.id + "/editar")
+        })
+    }
+
     const onSubmit = async (data: ConcursoRegister) => {
         startTransition(async () => {
             try {
@@ -64,7 +78,7 @@ export default function ConcursoForm({ type, concurso, rubricas }: { type: 'crea
         <div className={cn("bg-white rounded-lg shadow-lg p-6 w-full", type == "edit" ? "" : "max-w-md mx-auto")}>
             <Back href={"/admin/concursos/"} />
 
-            <h1 className="text-3xl mb-2 font-bold text-gray-900">{type === "create" ? "Crear" : "Editar"} Concurso</h1>
+            <h1 className="text-3xl mb-2 font-bold text-gray-900">{type === "create" ? "Crear Concurso" : `Editar "${concurso?.nombre}"`} </h1>
 
             {
                 type == "edit" && (
@@ -103,6 +117,9 @@ export default function ConcursoForm({ type, concurso, rubricas }: { type: 'crea
                                 <Link href={"/admin/concursos/" + concurso?.id + "/ranking"}>
                                     Ver Ranking
                                 </Link>
+                            </Button>
+                            <Button onClick={onDuplicarConcurso} disabled={isPending} variant={"outline"}>
+                                Duplicar Concurso
                             </Button>
                         </div>
                     </>
@@ -209,9 +226,11 @@ export default function ConcursoForm({ type, concurso, rubricas }: { type: 'crea
                     </Button>
                     {
                         type == "edit" && (
-                            <Button onClick={onDelete} disabled={isPending} variant={"destructive"}>
-                                <MdOutlineDelete size={24} />
-                            </Button>
+                            <>
+                                <Button onClick={onDelete} disabled={isPending} variant={"destructive"}>
+                                    <MdOutlineDelete size={24} />
+                                </Button>
+                            </>
                         )
                     }
                 </div>

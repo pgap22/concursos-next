@@ -1,11 +1,8 @@
 import Back from "@/components/Back";
 import JuradoItemList from "@/components/JuradoItemList";
 import { ListaJurado } from "@/components/ListaJurados";
-import { Concursante } from "@/components/participantes/Concursante";
-import { JuradoConcurso } from "@/components/participantes/Jurados";
-import { getconcursoByIdWithJurados, getconcursoByIdWithParticipantes } from "@/lib/concursos"
+import { getconcursoByIdWithJurados } from "@/lib/concursos"
 import { getJurados, getUsuariosByRol } from "@/lib/usuario";
-import Link from "next/link";
 import { redirect } from "next/navigation"
 
 export default async function ParticipantesConcursos({ params }: { params: { id: string } }) {
@@ -22,7 +19,7 @@ export default async function ParticipantesConcursos({ params }: { params: { id:
             <div className="bg-white rounded-lg shadow-md p-4 mb-4">
                 <Back href={"/admin/concursos/"+concurso.id+"/editar"} />
 
-                <h2 className="text-xl font-bold mb-4">Participantes</h2>
+                <h2 className="text-xl font-bold mb-4">Jurados</h2>
 
                 {/* Sección para agregar participantes */}
                 <ListaJurado jurados={jurados} concurso_id={concurso.id} />

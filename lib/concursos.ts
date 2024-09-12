@@ -15,7 +15,7 @@ export async function getconcursoById(id: string): Promise<ConcursoData | null> 
                 select: { id: true }
             },
             JuradosConcursos: {
-                select: { id: true }
+                select: { id: true, id_jurado: true }
             }
         }
     });
@@ -113,6 +113,22 @@ export async function getConcursosEnableToParticipate(id_concursante: string) {
         }
     })
     return concursos
+}
+
+export async function getConcursosEnableToRank(id_jurado: string) {
+    const concursos = await prisma.concurso.findMany({
+        where: {
+            JuradosConcursos: {
+                none: {
+                    id_jurado
+                }
+            }
+        },
+        orderBy: {
+            createdAt: 'asc'
+        }
+    })
+    return concursos;
 }
 
 export async function getParticipantesConcursoById(id: string) {

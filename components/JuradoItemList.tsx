@@ -26,7 +26,7 @@ export default function JuradoItemList({ jurado }: {
 
     return (
         <li key={jurado.id} className="py-2 gap-2 flex justify-between items-center">
-            <p className="text-base font-semibold text-gray-800">Participante: {jurado.jurado.nombre}</p>
+            <p className="text-base font-semibold text-gray-800">Jurado: {jurado.jurado.nombre}</p>
             <Button disabled={cargando} onClick={eliminar} variant={"destructive"}>Eliminar</Button>
         </li>
     )

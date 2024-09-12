@@ -24,6 +24,7 @@ import CriterioItem from "../actions-forms/CriterioItem"
 import PonderacionDialog from "../actions-forms/PonderacionDialog"
 import { duplicarRubrica } from "@/actions/duplicarRubrica"
 import { useRouter } from "next/navigation"
+import Back from "../Back"
 
 export default function EditarRubricaForm({ rubrica }: { rubrica: RubricaFull }) {
     const { register, handleSubmit } = useForm<RubricaSchema>({
@@ -161,6 +162,7 @@ export default function EditarRubricaForm({ rubrica }: { rubrica: RubricaFull })
 
     return (
         <div className="p-4 bg-white border rounded-md">
+            <Back href="/admin/rubricas" />
             <h2 className="mb-6 text-3xl font-bold">Edición de Rúbrica</h2>
             <form onSubmit={handleSubmit(enviarDatos)} className="space-y-4 mb-8">
                 <h3 className="text-xl font-semibold">Información General</h3>

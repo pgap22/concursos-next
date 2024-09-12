@@ -16,6 +16,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { RubricaData } from "@/types/RubricaData";
 import { createRubrica } from "@/actions/createRubrica";
 import { useRouter } from "next/navigation";
+import Back from "@/components/Back";
 
 
 
@@ -145,6 +146,7 @@ export default function CrearRubrica() {
 
     return (
         <div className="p-4 bg-white border rounded-md">
+            <Back href="/admin/rubricas" />
             <h2 className="mb-6 text-3xl font-bold">Creación de Rúbrica</h2>
             <div className="space-y-4 mb-4">
                 <h3 className="text-xl font-semibold">Información de la rúbrica</h3>

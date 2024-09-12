@@ -10,6 +10,19 @@ export async function getUsuarioById(id: string): Promise<usuario | null> {
     return prisma.usuario.findUnique({ where: { id } });
 }
 
+export async function getJuradoByid(id: string){
+    return await prisma.usuario.findUnique({
+        where: {id},
+        include: {
+            JuradosConcursos: {
+                include: {
+                    concurso: true
+                }
+            }
+        }
+    })
+}
+
 // Get a single usuario by Usuario
 export async function getUsuarioByUsuario(usuario: string | undefined): Promise<usuario | null> {
 

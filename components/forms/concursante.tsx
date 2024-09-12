@@ -28,6 +28,7 @@ export default function ConcursanteForm({ type, concursante, concursos }: {
         resolver: zodResolver(concursanteSchema),
         defaultValues: {
             ...concursante,
+            prueba: false
         }
     });
     const router = useRouter();
