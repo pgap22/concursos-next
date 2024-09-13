@@ -56,8 +56,8 @@ export default function CrearRubrica() {
     const editCriterio = (id: string, data: CriteriosSchema) => {
         setCriterios(criterios.map(criterio => {
             if (criterio.id == id) {
+                data.puntajes = criterio.puntajes
                 return {
-                    ...criterio,
                     ...data
                 }
             }
