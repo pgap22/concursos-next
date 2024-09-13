@@ -124,6 +124,12 @@ export default function EditarRubricaForm({ rubrica }: { rubrica: RubricaFull })
         setIdCriterio(id)
     }
 
+    const onDuplicarPonderacion = async (data : PonderacionSchema) =>{
+        const duplicated = {...data}
+        duplicated.nombre+= " Copia"
+        onCrearPonderacion(duplicated);
+    }
+
     const onCrearPonderacion = (data: PonderacionSchema) => {
         startTransition(async () => {
             try {
@@ -187,6 +193,7 @@ export default function EditarRubricaForm({ rubrica }: { rubrica: RubricaFull })
                             onDuplicate={onDuplicarCriterio}
                             onDelete={onDeleteCriterio}
                             onEdit={onEditCriterio}
+                            duplicarPonderacion={onDuplicarPonderacion}
                             onAddPonderacion={abrirPonderacionDialog}
                             onEditPonderacion={abrirEditarPonderacionDialog}
                             onDeletePonderacion={onDeletePuntaje}

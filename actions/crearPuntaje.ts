@@ -12,7 +12,7 @@ export const crearPuntaje =  async (id_criterio : string, data : PonderacionSche
                 id_criterio
             }
         })
-        revalidatePath("/admin/rubricas/editar/[id]")
+        revalidatePath("/admin/rubricas/editar/[id]", "page")
         return puntaje
     } catch (error) {
         throw error

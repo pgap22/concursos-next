@@ -97,6 +97,25 @@ export default function CrearRubrica() {
         setAddponderacionDialog(false);
     };
 
+    const duplicarPonderacion = (data : PonderacionSchema, id_criterio : string) => {
+        const duplicated = {...data};
+        duplicated.id = uuidv4()
+        duplicated.nombre+= " Copia"
+        console.log(data)
+        console.log(duplicated)
+
+        setCriterios(criterios.map((criterio) => {
+            if (criterio.id === id_criterio) {
+                if (!criterio.puntajes) {
+                    criterio.puntajes = [];
+                }
+                criterio.puntajes = [...criterio.puntajes, duplicated];
+                return criterio;
+            }
+            return criterio;
+        }))
+    }
+
     const openPonderacionCriterio = (id: string) => {
         setAddponderacionDialog(true);
         setIdCriterio(id);
@@ -121,6 +140,7 @@ export default function CrearRubrica() {
         }
     };
 
+    
     const editarPonderacion = (data: PonderacionSchema) => {
         setCriterios(criterios.map(criterio => {
             if (criterio.id == idCriterio) {
@@ -170,6 +190,7 @@ export default function CrearRubrica() {
                             onDuplicate={duplicarCriterio}
                             onDelete={deleteCriterio}
                             onEdit={editCriterio}
+                            duplicarPonderacion={duplicarPonderacion}
                             onAddPonderacion={openPonderacionCriterio}
                             onEditPonderacion={(data) => abrirEditarPonderacion(criterio.id as string, data)}
                             onDeletePonderacion={(data) => deletePonderacion(criterio.id as string, data)}

@@ -9,6 +9,7 @@ import { Button } from "../ui/button"
 import { MdOutlineChevronRight, MdOutlineCopyAll, MdOutlineDelete, MdOutlineEdit } from "react-icons/md"
 import { cn } from "@/lib/utils"
 import { $Enums } from "@prisma/client"
+import { PonderacionSchema } from "@/schemas/ponderacion"
 interface CriterioItemProps {
     criterio: CriterioFull | CriteriosSchema
     disabled: boolean
@@ -18,15 +19,17 @@ interface CriterioItemProps {
     onAddPonderacion: (id: string) => void
     onEditPonderacion: (id: string, id_criterio: string) => void
     onDeletePonderacion: (id: string) => void
+    duplicarPonderacion: (data: PonderacionSchema, id_criterio: string) => void
 }
 
-export default function CriterioItem({
+export default function     CriterioItem({
     criterio,
     disabled,
     onDelete,
     onDuplicate,
     onEdit,
     onAddPonderacion,
+    duplicarPonderacion,
     onEditPonderacion,
     onDeletePonderacion
 }: CriterioItemProps) {
@@ -83,6 +86,9 @@ export default function CriterioItem({
                                     </Button>
                                     <Button disabled={disabled} className="aspect-square p-2" onClick={() => onDeletePonderacion(ponderacion.id)} variant="destructive">
                                         <MdOutlineDelete size={28} />
+                                    </Button>
+                                    <Button disabled={disabled} className="aspect-square p-2" onClick={() => duplicarPonderacion(ponderacion, criterio.id)} variant="outline">
+                                        <MdOutlineCopyAll size={28} />
                                     </Button>
                                 </div>
                             </div>

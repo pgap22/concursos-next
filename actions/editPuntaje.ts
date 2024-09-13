@@ -14,7 +14,7 @@ export const editPuntaje = async (id: string, data: PonderacionSchema) => {
                 tipo: data.tipo,
             }
         })
-        revalidatePath("/admin/rubricas/editar/[id]")
+        revalidatePath("/admin/rubricas/editar/[id]", "page")
         return puntaje
     } catch (error) {
         throw error
